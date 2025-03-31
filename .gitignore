@@ -3,10 +3,10 @@
 *.joblib
 *.sqlite
 *.cache
-*.png
+
 *.jpg
 *.jpeg
-*.pdf
+
 *.docx
 *.doc
 *.pth
