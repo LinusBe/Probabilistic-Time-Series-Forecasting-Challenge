@@ -1,0 +1,557 @@
+# ==============================================
+# File: /configs/energy/feature_selection.yml
+# Description: Konfiguration für den iterativen Feature Selection Prozess in der Pipeline.
+# Hier werden Parameter definiert, die steuern, ob und wie zusätzliche Features generiert
+# und im Auswahlprozess berücksichtigt werden.
+# ==============================================
+dataset: "energy"         # Name des Datensatzes, z. B. "energy", "no2" oder "solar".
+model: "light_gbm_feauture_selection"        # Modelltyp; hier wird LightGBM genutzt, kann aber auch "quantile_regression" usw. sein.
+quantiles: [0.025, 0.25, 0.5, 0.75, 0.975]  # Liste der zu prognostizierenden Quantile.
+       # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+optuna_search_space:
+  param_space:
+    max_depth: [6, 30]          # [min, max]
+    num_leaves: [15, 120]          # [min, max]
+    learning_rate: [0.0001, 0.5]    # [min, max] für log=True
+    n_estimators: [10, 600]
+    lambda_l1: [0.000001, 10.0]       # [min, max] für log=True
+    lambda_l2: [0.000001, 10.0]       # [min, max] für log=True
+    boosting_type: [gbdt]    # Liste möglicher Werte
+    feature_fraction: [0.5, 1.0]
+    bagging_fraction: [0.3, 1.0]
+    bagging_freq: [1, 10]
+    min_child_samples: [5, 300]
+    min_child_weight: [0.0001, 0.01]  # [min, max] für log=True
+    subsample: [0.5, 1.0]
+    subsample_freq: [1, 20]
+    colsample_bytree: [0.3, 1.0]
+    max_bin: [20, 200]
+    early_stopping_rounds: [3, 5]
+    min_split_gain: [0.0, 0.2]
+    min_data_in_leaf: [1, 20]           # Minimum number of observations that must fall into a tree node for it to be added.
+    min_sum_hessian_in_leaf: [1, 15]   # Minimum sum of the Hessian
+
+
+
+versions:
+  v1.0.0:
+    # Datenaufbereitung und Splitting
+    start_date: "2022-01-01 00:00:00"  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: False
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 7
+      delta: 0.0001
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type:    # oder "sliding"
+      test_window: 1W            # 1 Woche Vorhersage
+      optuna_folds: 1       # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 50
+      n_splits: 2
+      direction: minimize       # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss     # Metrik, die optimiert werden soll
+      quantile: 0.5   
+    feature_selection:
+      top_n: 1000
+      run_selection: True
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:      # Lag-Features: Verzögerungen (in Stunden) der Zielvariablen "gesamt"
+        lags: [24,48,72,96, 120, 148, 168]                   
+      # Zusätzliche Basis-Zeitfeatures, die immer erzeugt werden sollen
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: True
+      # Exogene Variablen, die als zusätzliche Inputs verwendet werden
+      exogenous:
+        base_features: ['ALL']
+        transformations:
+          rolling:
+            windows:  [3, 6, 12, 24, 168]
+            stats: [std, mean, min, max]
+            features: [temperature_2m, relative_humidity_2m, wind_speed_10m, surface_pressure, apparent_temperature]
+          diff:
+            windows: [3, 6, 12, 24, 168]
+            features: [temperature_2m, relative_humidity_2m, wind_speed_10m, surface_pressure, apparent_temperature]
+      advanced:
+        holiday:
+          enabled: True
+          proximity: True
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+          - [wind_direction_100m, wind_speed_10m]
+        rolling_moments:
+          windows: [12, 24, 168]
+          moments: [skew, kurtosis]
+          features:  [temperature_2m, wind_speed_10m]
+    params:
+      max_depth: 10                   # Maximale Baumtiefe.
+      num_leaves: 110                 # Maximale Anzahl der Blätter pro Baum.
+      learning_rate: 0.004276178789963134 # Lernrate für das Boosting. # Lernrate für das Boosting.
+      n_estimators: 533
+      boosting_type: gbdt             # Boosting-Algorithmus (gbdt, dart, goss).
+      lambda_l1: 8.558125877336166e-06  # L1-Regularisierung.
+      lambda_l2: 0.3343604819776156     # L2-Regularisierung.
+      feature_fraction: 0.5505864888491752 # Anteil der Features, die zufällig pro Baum verwendet werden.
+      bagging_fraction: 0.7399190643268547 # Anteil der Daten, die für Bagging genutzt werden.
+      bagging_freq: 9               # Frequenz des Bagging (alle X Iterationen).
+      min_child_samples: 300        # Minimale Anzahl an Datenpunkten in einem Blatt.
+      min_child_weight: 0.0005451339137826213 # Minimales Gewicht der Kinderblätter.
+      subsample: 0.5964834380303817 # Zufälliger Anteil der Daten, der für jeden Baum genutzt wird.
+      subsample_freq: 18            # Frequenz, in der das Subsampling durchgeführt wird.
+      colsample_bytree: 0.5984112267775727  # Anteil der Spalten (Features) pro Baum.
+      max_bin: 167                  # Maximale Anzahl von Bins für die Diskretisierung der Features.
+      min_split_gain: 0.1897070392623261   # Minimaler Gewinn, der notwendig ist, um einen Split durchzuführen.
+      min_data_in_leaf: 1           # Minimum number of observations that must fall into a tree node for it to be added.
+      min_sum_hessian_in_leaf: 14.237237098256708 # Minimum sum of the Hessian
+      verbosity: -1                 # Verbositätslevel (-1 unterdrückt Ausgaben).
+      device_type: cpu             # Gerätetyp ("cuda" für GPU-Beschleunigung).
+      gpu_platform_id: 0            # GPU-Plattform-ID (falls relevant).
+      gpu_device_id: 0              # GPU-Geräte-ID (falls relevant).
+    forecast_approach: iterative      # "iterative" oder "direct" – bestimmt, wie Vorhersagen gemacht werden.
+    forecast_horizon: 72              # Prognosezeitraum in Stunden.
+
+
+
+  v1.0.1:
+    # Datenaufbereitung und Splitting
+    start_date: "2022-01-01 00:00:00"  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: False
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 7
+      delta: 0.0001
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type:    # oder "sliding"
+      test_window: 1W            # 1 Woche Vorhersage
+      optuna_folds: 1       # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 50
+      n_splits: 2
+      direction: minimize       # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss     # Metrik, die optimiert werden soll
+      quantile: 0.5   
+    feature_selection:
+      top_n: 1000
+      run_selection: True
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:                          # Lag-Features: Nur die Lags aus den Top 45
+        lags: [24, 48, 72, 96, 120, 148, 168] # Beinhaltet lag_168, lag_24, lag_72, lag_120, lag_48, lag_96, lag_148
+      # Basis-Zeitfeatures, die in den Top 45 sind
+      time_features:
+        - hour                         # Top 45
+        - weekday                      # Top 45
+        - is_weekend                   # Top 45
+        # - month wurde entfernt, da nicht in Top 45
+      fourier_terms: True              # Beibehalten, da weekday_sin und hour_cos in Top 45 sind
+      # Exogene Variablen: Basisfeatures und Transformationen angepasst an Top 45
+      exogenous:
+        # Nur die Basis-Features, die entweder selbst in Top 45 sind oder für Top 45 Transformationen benötigt werden
+        base_features:
+          - wind_speed_10m             # Basis für viele Top 45 Transformationen (diff, std, mean, min, skew, kurt)
+          - apparent_temperature       # Basis für Top 45 Transformationen (diff, std)
+          - temperature_2m             # Basis für Top 45 Transformationen (diff, skew, kurt, std)
+          - relative_humidity_2m       # Basis für Top 45 Transformationen (diff, max)
+          - surface_pressure           # Basis für Top 45 Transformationen (diff, std, max, min, mean)
+          - sulphur_dioxide            # Top 45
+          - soil_moisture_0_to_7cm     # Top 45
+          - carbon_monoxide            # Top 45
+          - ammonia                    # Top 45
+          - cloud_cover_high           # Top 45
+          # Andere ursprüngliche Features wie rain, sunshine_duration etc. entfernt, da weder sie noch ihre Transformationen in Top 45 sind
+        transformations:
+          rolling:                     # Rolling-Features, die in Top 45 vorkommen
+            windows: [24, 168]         # Nur Fenster, die für Top 45 relevant sind
+            stats: [std, mean, min, max] # Stats, die für Top 45 relevant sind
+            features:                  # Basis-Features, deren Rolling-Stats in Top 45 sind
+              - temperature_2m         # Für temperature_2m_std_168h (#45)
+              - relative_humidity_2m   # Für relative_humidity_2m_max_24h (#31), relative_humidity_2m_max_168h (#34)
+              - wind_speed_10m         # Für wind_speed_10m_std_168h (#24), wind_speed_10m_mean_168h (#41), wind_speed_10m_min_168h (#43), wind_speed_10m_std_24h (#45)
+              - surface_pressure       # Für surface_pressure_std_168h (#22), surface_pressure_max_168h (#35), surface_pressure_std_24h (#39), surface_pressure_min_168h (#40)
+              - apparent_temperature   # Für apparent_temperature_std_168h (#37)
+          diff:                        # Diff-Features, die in Top 45 vorkommen
+            windows: [12, 24, 168]     # Nur Fenster, die für Top 45 relevant sind (12h für temp_diff)
+            features:                  # Basis-Features, deren Diffs in Top 45 sind
+              - temperature_2m         # Für temperature_2m_diff_168h (#13), temperature_2m_diff_12h (#25)
+              - relative_humidity_2m   # Für relative_humidity_2m_diff_168h (#26), relative_humidity_2m_diff_24h (#36)
+              - wind_speed_10m         # Für wind_speed_10m_diff_168h (#6), wind_speed_10m_diff_24h (#9)
+              - surface_pressure       # Für surface_pressure_diff_168h (#21), surface_pressure_diff_24h (#44)
+              - apparent_temperature   # Für apparent_temperature_diff_168h (#12), apparent_temperature_diff_24h (#27)
+      advanced:
+        holiday:                     # Holiday Features sind in Top 45 (days_since/until)
+          enabled: True
+          proximity: True              # Wird für days_since/until_holiday benötigt
+          country: DE
+        # Interactions entfernt, da keine in Top 45
+        # interactions:
+        #   - [temperature_2m, rain]
+        #   - [sunshine_duration, wind_speed_10m]
+        #   - [wind_direction_100m, wind_speed_10m]
+        rolling_moments:             # Rolling Moments, die in Top 45 sind
+          windows: [24, 168]         # Nur Fenster, die für Top 45 relevant sind
+          moments: [skew, kurtosis]    # Nur Momente, die für Top 45 relevant sind
+          features:                    # Nur Features, deren Momente in Top 45 sind
+            - temperature_2m         # Für temperature_2m_skew_168h (#23), temperature_2m_kurtosis_168h (#29), temperature_2m_skew_24h (#57 -> ausserhalb Top 45, aber kommt evtl. mit)
+            - wind_speed_10m         # Für wind_speed_10m_kurtosis_168h (#18), wind_speed_10m_skew_168h (#20), wind_speed_10m_kurtosis_24h (#33)
+    # Parameter des Modells (unverändert)
+    params:
+      max_depth: 10                   # Maximale Baumtiefe.
+      num_leaves: 110                 # Maximale Anzahl der Blätter pro Baum.
+      learning_rate: 0.004276178789963134 # Lernrate für das Boosting. # Lernrate für das Boosting.
+      n_estimators: 533
+      boosting_type: gbdt             # Boosting-Algorithmus (gbdt, dart, goss).
+      lambda_l1: 8.558125877336166e-06  # L1-Regularisierung.
+      lambda_l2: 0.3343604819776156     # L2-Regularisierung.
+      feature_fraction: 0.5505864888491752 # Anteil der Features, die zufällig pro Baum verwendet werden.
+      bagging_fraction: 0.7399190643268547 # Anteil der Daten, die für Bagging genutzt werden.
+      bagging_freq: 9               # Frequenz des Bagging (alle X Iterationen).
+      min_child_samples: 300        # Minimale Anzahl an Datenpunkten in einem Blatt.
+      min_child_weight: 0.0005451339137826213 # Minimales Gewicht der Kinderblätter.
+      subsample: 0.5964834380303817 # Zufälliger Anteil der Daten, der für jeden Baum genutzt wird.
+      subsample_freq: 18            # Frequenz, in der das Subsampling durchgeführt wird.
+      colsample_bytree: 0.5984112267775727  # Anteil der Spalten (Features) pro Baum.
+      max_bin: 167                  # Maximale Anzahl von Bins für die Diskretisierung der Features.
+      min_split_gain: 0.1897070392623261   # Minimaler Gewinn, der notwendig ist, um einen Split durchzuführen.
+      min_data_in_leaf: 1           # Minimum number of observations that must fall into a tree node for it to be added.
+      min_sum_hessian_in_leaf: 14.237237098256708 # Minimum sum of the Hessian
+      verbosity: -1                 # Verbositätslevel (-1 unterdrückt Ausgaben).
+      device_type: cpu             # Gerätetyp ("cuda" für GPU-Beschleunigung).
+      gpu_platform_id: 0            # GPU-Plattform-ID (falls relevant).
+      gpu_device_id: 0              # GPU-Geräte-ID (falls relevant).
+    forecast_approach: iterative      # "iterative" oder "direct" – bestimmt, wie Vorhersagen gemacht werden.
+    forecast_horizon: 72              # Prognosezeitraum in Stunden.
+
+
+
+
+  v1.0.2:
+    # Datenaufbereitung und Splitting
+    start_date: "2022-01-01 00:00:00"  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: False
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 7
+      delta: 0.0001
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type:    # oder "sliding"
+      test_window: 1W            # 1 Woche Vorhersage
+      optuna_folds: 1       # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 50
+      n_splits: 2
+      direction: minimize       # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss     # Metrik, die optimiert werden soll
+      quantile: 0.5   
+    feature_selection:
+      top_n: 1000
+      run_selection: True
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:                          # Lag-Features: Nur die Lags aus den Top 45
+        lags: [24, 48, 72, 96, 120, 148, 168] # Beinhaltet lag_168, lag_24, lag_72, lag_120, lag_48, lag_96, lag_148
+      # Basis-Zeitfeatures, die in den Top 45 sind
+      time_features:
+        - hour                         # Top 45
+        - weekday                      # Top 45
+        - is_weekend                   # Top 45
+        # - month wurde entfernt, da nicht in Top 45
+      fourier_terms: True              # Beibehalten, da weekday_sin und hour_cos in Top 45 sind
+      # Exogene Variablen: Basisfeatures und Transformationen angepasst an Top 45
+      exogenous:
+        # Nur die Basis-Features, die entweder selbst in Top 45 sind oder für Top 45 Transformationen benötigt werden
+        base_features:
+          - wind_speed_10m         # Benötigt für diff_168/24, min_24, max_168
+          - temperature_2m         # Benötigt für diff_12/168, max_24/168
+          - relative_humidity_2m   # Benötigt für diff_12
+          - apparent_temperature   # Benötigt für diff_168, max_24, mean_24, min_168/24
+          # Keine direkten Basisfeatures (wie SO2, CO, etc.) in Top 30
+          # surface_pressure nicht mehr benötigt
+        transformations:
+          rolling:                 # Rolling-Features, die in Top 30 vorkommen
+            windows: [24, 168]     # Fenster, die für Top 30 relevant sind
+            stats: [mean, min, max] # Nur Stats, die für Top 30 relevant sind (kein std)
+            features:              # Basis-Features, deren Rolling-Stats in Top 30 sind
+              - temperature_2m     # Für temp_max_24 (#25), temp_max_168 (#28)
+              - wind_speed_10m     # Für wind_min_24 (#26), wind_max_168 (#34)
+              - apparent_temperature # Für apptemp_max_24 (#21), apptemp_mean_24 (#22), apptemp_min_168 (#27), apptemp_min_24 (#29)
+          diff:                    # Diff-Features, die in Top 30 vorkommen
+            windows: [12, 24, 168] # Fenster, die für Top 30 relevant sind
+            features:              # Basis-Features, deren Diffs in Top 30 sind
+              - temperature_2m     # Für temp_diff_12 (#16), temp_diff_168 (#24)
+              - relative_humidity_2m # Für relhum_diff_12 (#19)
+              - wind_speed_10m     # Für wind_diff_168 (#11), wind_diff_24 (#13)
+              - apparent_temperature # Für apptemp_diff_168 (#20)
+    advanced:
+      holiday:                     # Holiday Features sind in Top 30
+        enabled: True
+        proximity: True              # Benötigt für days_until (#6), days_since (#7)
+        country: DE                  # is_holiday (#23) wird auch generiert
+        interactions: []
+        #   - [temperature_2m, rain]
+        #   - [sunshine_duration, wind_speed_10m]
+        #   - [wind_direction_100m, wind_speed_10m]
+        rolling_moments:             # Rolling Moments, die in Top 45 sind
+          windows: []         # Nur Fenster, die für Top 45 relevant sind
+          moments: []    # Nur Momente, die für Top 45 relevant sind
+          features: []    
+    params:
+      max_depth: 10                   # Maximale Baumtiefe.
+      num_leaves: 110                 # Maximale Anzahl der Blätter pro Baum.
+      learning_rate: 0.004276178789963134 # Lernrate für das Boosting. # Lernrate für das Boosting.
+      n_estimators: 533
+      boosting_type: gbdt             # Boosting-Algorithmus (gbdt, dart, goss).
+      lambda_l1: 8.558125877336166e-06  # L1-Regularisierung.
+      lambda_l2: 0.3343604819776156     # L2-Regularisierung.
+      feature_fraction: 0.5505864888491752 # Anteil der Features, die zufällig pro Baum verwendet werden.
+      bagging_fraction: 0.7399190643268547 # Anteil der Daten, die für Bagging genutzt werden.
+      bagging_freq: 9               # Frequenz des Bagging (alle X Iterationen).
+      min_child_samples: 300        # Minimale Anzahl an Datenpunkten in einem Blatt.
+      min_child_weight: 0.0005451339137826213 # Minimales Gewicht der Kinderblätter.
+      subsample: 0.5964834380303817 # Zufälliger Anteil der Daten, der für jeden Baum genutzt wird.
+      subsample_freq: 18            # Frequenz, in der das Subsampling durchgeführt wird.
+      colsample_bytree: 0.5984112267775727  # Anteil der Spalten (Features) pro Baum.
+      max_bin: 167                  # Maximale Anzahl von Bins für die Diskretisierung der Features.
+      min_split_gain: 0.1897070392623261   # Minimaler Gewinn, der notwendig ist, um einen Split durchzuführen.
+      min_data_in_leaf: 1           # Minimum number of observations that must fall into a tree node for it to be added.
+      min_sum_hessian_in_leaf: 14.237237098256708 # Minimum sum of the Hessian
+      verbosity: -1                 # Verbositätslevel (-1 unterdrückt Ausgaben).
+      device_type: cpu             # Gerätetyp ("cuda" für GPU-Beschleunigung).
+      gpu_platform_id: 0            # GPU-Plattform-ID (falls relevant).
+      gpu_device_id: 0              # GPU-Geräte-ID (falls relevant).
+    forecast_approach: iterative      # "iterative" oder "direct" – bestimmt, wie Vorhersagen gemacht werden.
+    forecast_horizon: 72              # Prognosezeitraum in Stunden.
+
+
+
+
+
+
+  v1.0.3:
+    # Datenaufbereitung und Splitting
+    start_date: "2022-01-01 00:00:00"  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: False
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 7
+      delta: 0.0001
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type:    # oder "sliding"
+      test_window: 1W            # 1 Woche Vorhersage
+      optuna_folds: 1       # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 50
+      n_splits: 2
+      direction: minimize       # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss     # Metrik, die optimiert werden soll
+      quantile: 0.5   
+    feature_selection:
+      top_n: 1000
+      run_selection: True
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      # Datenaufbereitung und Splitting
+      target:      # Lag-Features: Verzögerungen (in Stunden) der Zielvariablen "gesamt"
+        lags: [24,48,72,96, 120, 148, 168]                   
+      # Zusätzliche Basis-Zeitfeatures, die immer erzeugt werden sollen
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: True
+      # Exogene Variablen, die als zusätzliche Inputs verwendet werden
+      exogenous:
+        base_features: ['ALL']
+        transformations:
+          rolling:
+            windows:  []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: True
+          proximity: True
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features:  []
+    params:
+      max_depth: 10                   # Maximale Baumtiefe.
+      num_leaves: 110                 # Maximale Anzahl der Blätter pro Baum.
+      learning_rate: 0.004276178789963134 # Lernrate für das Boosting. # Lernrate für das Boosting.
+      n_estimators: 533
+      boosting_type: gbdt             # Boosting-Algorithmus (gbdt, dart, goss).
+      lambda_l1: 8.558125877336166e-06  # L1-Regularisierung.
+      lambda_l2: 0.3343604819776156     # L2-Regularisierung.
+      feature_fraction: 0.5505864888491752 # Anteil der Features, die zufällig pro Baum verwendet werden.
+      bagging_fraction: 0.7399190643268547 # Anteil der Daten, die für Bagging genutzt werden.
+      bagging_freq: 9               # Frequenz des Bagging (alle X Iterationen).
+      min_child_samples: 300        # Minimale Anzahl an Datenpunkten in einem Blatt.
+      min_child_weight: 0.0005451339137826213 # Minimales Gewicht der Kinderblätter.
+      subsample: 0.5964834380303817 # Zufälliger Anteil der Daten, der für jeden Baum genutzt wird.
+      subsample_freq: 18            # Frequenz, in der das Subsampling durchgeführt wird.
+      colsample_bytree: 0.5984112267775727  # Anteil der Spalten (Features) pro Baum.
+      max_bin: 167                  # Maximale Anzahl von Bins für die Diskretisierung der Features.
+      min_split_gain: 0.1897070392623261   # Minimaler Gewinn, der notwendig ist, um einen Split durchzuführen.
+      min_data_in_leaf: 1           # Minimum number of observations that must fall into a tree node for it to be added.
+      min_sum_hessian_in_leaf: 14.237237098256708 # Minimum sum of the Hessian
+      verbosity: -1                 # Verbositätslevel (-1 unterdrückt Ausgaben).
+      device_type: cpu             # Gerätetyp ("cuda" für GPU-Beschleunigung).
+      gpu_platform_id: 0            # GPU-Plattform-ID (falls relevant).
+      gpu_device_id: 0              # GPU-Geräte-ID (falls relevant).
+    forecast_approach: iterative      # "iterative" oder "direct" – bestimmt, wie Vorhersagen gemacht werden.
+    forecast_horizon: 72              # Prognosezeitraum in Stunden.
+

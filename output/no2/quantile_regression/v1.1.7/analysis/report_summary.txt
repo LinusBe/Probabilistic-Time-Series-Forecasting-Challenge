@@ -1,0 +1,165 @@
+=== Summary of Analyses ===
+
+Test Period: 2024-11-27 18:00 to 2025-03-20 20:00
+
+Generated Plots (see 'plots' folder):
+  - time_series_plot_overall.pdf, time_series_plot_specific.pdf
+  - residuals_time_overall.pdf, residuals_hist_overall.pdf, residuals_time_specific.pdf, residuals_hist_specific.pdf
+  - acf_residuals_overall.pdf, pacf_residuals_overall.pdf, acf_residuals_specific.pdf, pacf_residuals_specific.pdf
+  - coverage_plot_overall.pdf, coverage_plot_specific.pdf
+  - qq_plot_residuals_overall.pdf, qq_plot_residuals_specific.pdf
+  - pit_histogram_overall.pdf, pit_histogram_specific.pdf
+  - overlaid_predictions_overall.pdf, overlaid_predictions_specific.pdf
+  - calibration_curve_overall.pdf, calibration_curve_specific.pdf
+
+Generated Statistics (see 'stats' folder):
+Overall:
+  - ljung_box_test_overall.csv
+  - coverage_results_overall.csv
+  - shapiro_test_overall.csv
+  - pinball_loss_overall.csv
+  - d2_pinball_loss_overall.csv
+  - pit_values_overall.csv
+  - mae_mape_overall.csv
+  - outlier_report_overall.csv
+Specific Times (Fri/Sat at 11:00, 15:00, 19:00):
+  - coverage_results_specific.csv
+  - pinball_loss_specific.csv
+  - mae_mape_specific.csv
+
+---------------------------------------
+Files are located in the 'stats' and 'plots' subdirectories.
+For details, see the individual CSV and PDF files.
+
+End of Report.
+
+=== Additional CSV Info ===
+
+--- sharpness_specific.csv ---
+,sharpness,period
+0,53.144340461636325,specific
+
+--- ljung_box_test_overall.csv ---
+lb_stat,lb_pvalue
+2761.501981157783,0.0
+3361.007236151256,0.0
+
+--- d2_pinball_loss_overall.csv ---
+Quantile,D2PinballLoss,Period
+0.025,-0.05775691480931555,overall
+0.25,-0.0824856623873158,overall
+0.5,-0.09477254299925186,overall
+0.75,-0.11280899243162468,overall
+0.975,-0.21239684555563398,overall
+
+--- mae_mape_overall.csv ---
+Metric,Value,Period
+MAE,13.291977070148786,overall
+MAPE,0.4689657604564718,overall
+
+--- mincer_zarnowitz_regression_specific.csv ---
+Intercept,Slope,R-squared,p-value_const,p-value_forecast
+16.978469025515274,0.6799999148496032,0.024254848075995983,0.11124068619616859,0.1297208372301528
+
+--- sharpness_overall.csv ---
+,sharpness,period
+0,51.70452442826726,overall
+
+--- outlier_report_overall.csv ---
+date_time_utc,gesamt,gesamt_pred_0.5,residuals
+2025-01-24 08:00:00+00:00,77.0,20.093194560210183,-56.90680543978982
+2025-01-24 18:00:00+00:00,75.0,25.771408939772357,-49.22859106022764
+2025-01-25 00:00:00+00:00,69.0,18.476496090682335,-50.52350390931767
+2025-01-25 17:00:00+00:00,90.0,25.350516885127632,-64.64948311487237
+2025-01-25 18:00:00+00:00,80.0,25.34305500797326,-54.65694499202674
+2025-02-21 18:00:00+00:00,74.0,23.799623658124514,-50.20037634187548
+2025-02-21 19:00:00+00:00,83.0,24.251739085661725,-58.748260914338275
+2025-02-21 20:00:00+00:00,82.0,24.257018900625077,-57.74298109937492
+2025-02-21 21:00:00+00:00,74.0,23.996178324594545,-50.003821675405455
+2025-02-22 17:00:00+00:00,71.0,20.94139357233712,-50.05860642766288
+2025-02-22 18:00:00+00:00,79.0,21.32377125958498,-57.67622874041502
+2025-02-22 19:00:00+00:00,78.0,21.699237845739876,-56.30076215426013
+2025-03-06 18:00:00+00:00,94.0,27.06362145621671,-66.93637854378329
+2025-03-06 19:00:00+00:00,111.0,28.031512368904977,-82.96848763109503
+2025-03-06 20:00:00+00:00,95.0,27.529209901848333,-67.47079009815167
+2025-03-06 21:00:00+00:00,83.0,25.98818983547153,-57.01181016452847
+2025-03-07 00:00:00+00:00,69.0,17.665158321245045,-51.334841678754955
+2025-03-07 19:00:00+00:00,105.0,23.875994972679532,-81.12400502732046
+2025-03-07 20:00:00+00:00,106.0,23.89550154643476,-82.10449845356524
+2025-03-07 21:00:00+00:00,86.0,24.243727830695295,-61.75627216930471
+2025-03-07 22:00:00+00:00,73.0,24.16596766861637,-48.834032331383625
+2025-03-08 19:00:00+00:00,102.0,22.95378486733195,-79.04621513266805
+2025-03-08 20:00:00+00:00,98.0,24.14204978575936,-73.85795021424065
+2025-03-08 21:00:00+00:00,93.0,25.316214942399736,-67.68378505760026
+2025-03-20 18:00:00+00:00,112.0,24.639502315278367,-87.36049768472164
+2025-03-20 19:00:00+00:00,110.0,25.24765444882678,-84.75234555117322
+2025-03-20 20:00:00+00:00,103.0,25.99429850517292,-77.00570149482708
+
+--- pinball_loss_specific.csv ---
+Quantile,PinballLoss,Period
+0.025,0.6740111655842697,specific
+0.25,4.583424915231564,specific
+0.5,6.67137336012421,specific
+0.75,6.332707171168935,specific
+0.975,2.1186389501517398,specific
+
+--- d2_pinball_loss_specific.csv ---
+Quantile,D2PinballLoss,Period
+0.025,-0.05479029201186947,specific
+0.25,-0.03789154536687245,specific
+0.5,-0.00976126933549959,specific
+0.75,-0.04394892187061128,specific
+0.975,-0.33783433252555306,specific
+
+--- ljung_box_test_specific.csv ---
+lb_stat,lb_pvalue
+29.30692659173868,0.0011111310307169325
+52.607022191447626,9.281839859196605e-05
+
+--- diebold_mariano_test_overall.csv ---
+DM Statistic,p-value
+11.21466410536595,0.0
+
+--- diebold_mariano_test_specific.csv ---
+DM Statistic,p-value
+1.773974865242533,0.07617961327474787
+
+--- mae_mape_specific.csv ---
+Metric,Value,Period
+MAE,13.34274672024842,specific
+MAPE,0.36198273730442637,specific
+
+--- shapiro_test_specific.csv ---
+Test,W_stat,p_value
+Shapiro–Wilk,0.855371526118145,3.082959567662552e-08
+
+--- coverage_results_overall.csv ---
+lower_q,upper_q,nominal_coverage,empirical_coverage
+0.025,0.975,0.95,0.9310924369747899
+
+--- coverage_results_specific.csv ---
+lower_q,upper_q,nominal_coverage,empirical_coverage
+0.025,0.975,0.95,0.9375
+
+--- pinball_loss_overall.csv ---
+Quantile,PinballLoss,Period
+0.025,0.6345175211778957,overall
+0.25,4.558630022481213,overall
+0.5,6.645988535074393,overall
+0.75,6.152277142460774,overall
+0.975,1.4938665802074593,overall
+
+--- outlier_report_specific.csv ---
+date_time_utc,gesamt,gesamt_pred_0.5,residuals
+2025-02-21 19:00:00+00:00,83.0,24.251739085661725,-58.748260914338275
+2025-02-22 19:00:00+00:00,78.0,21.699237845739876,-56.30076215426013
+2025-03-07 19:00:00+00:00,105.0,23.875994972679532,-81.12400502732046
+2025-03-08 19:00:00+00:00,102.0,22.95378486733195,-79.04621513266805
+
+--- shapiro_test_overall.csv ---
+Test,W_stat,p_value
+Shapiro–Wilk,0.9302255379221873,4.0670205102019685e-23
+
+--- mincer_zarnowitz_regression_overall.csv ---
+Intercept,Slope,R-squared,p-value_const,p-value_forecast
+15.896819303331224,0.6656243581588965,0.03459250778782219,1.1237722665095484e-11,1.0079431138615228e-10

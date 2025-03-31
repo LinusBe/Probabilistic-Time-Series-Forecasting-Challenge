@@ -1,0 +1,428 @@
+Classical seasonal decomposition completed. Plot saved as: scripts/data_analysis/energy/eda_report_22_25_1/plots/seasonal_decomposition.pdf.
+Residuals saved as CSV: scripts/data_analysis/energy/eda_report_22_25_1/plots/seasonal_decomposition_residuals.csv.
+Full Time Series EDA Report
+============================================================
+Target Variable: Energy Demand
+Time Range: 2022-01-01 00:00:00+00:00 to 2025-03-20 20:00:00+00:00
+
+I. Stationarity Tests:
+ADF test (d=0): p-value = 2.97e-29.
+ADF test (d=1): p-value = 0.00e+00.
+KPSS test (d=0): p-value = 0.0100.
+KPSS test (d=1): p-value = 0.1000.
+Rolling statistics plot saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/rolling_statistics.pdf.
+
+II. Autocorrelation Analysis:
+ACF and PACF plots saved (up to 100 lags): scripts/data_analysis/energy/eda_report_22_25_1/plots/acf_pacf.pdf.
+Ljung–Box test results for lags [10, 20]:
+          lb_stat  lb_pvalue
+10   94617.309448        0.0
+20  111166.726919        0.0
+Autocorrelation heatmap saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/autocorrelation_heatmap.pdf.
+
+III. Seasonality Analysis:
+Classical seasonal decomposition completed. Plot saved as: scripts/data_analysis/energy/eda_report_22_25_1/plots/seasonal_decomposition.pdf.
+STL decomposition completed. Plot saved as: scripts/data_analysis/energy/eda_report_22_25_1/plots/stl_decomposition.pdf.
+Boxplots by month, weekday, and hour saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/boxplot_by_month.pdf, scripts/data_analysis/energy/eda_report_22_25_1/plots/boxplot_by_weekday.pdf, scripts/data_analysis/energy/eda_report_22_25_1/plots/boxplot_by_hour.pdf.
+
+IV. Exogenous and Cross-Correlation Analysis:
+Cross-correlation: Energy Demand vs. temperature_2m. Optimal lag: 11, Correlation: -0.4894
+Cross-correlation: Energy Demand vs. relative_humidity_2m. Optimal lag: 11, Correlation: 0.4828
+Cross-correlation: Energy Demand vs. dew_point_2m. Optimal lag: 12, Correlation: -0.3562
+Cross-correlation: Energy Demand vs. apparent_temperature. Optimal lag: 11, Correlation: -0.4690
+Cross-correlation: Energy Demand vs. precipitation. Optimal lag: 0, Correlation: 0.0456
+Cross-correlation: Energy Demand vs. rain. Optimal lag: 11, Correlation: -0.0543
+Cross-correlation: Energy Demand vs. surface_pressure. Optimal lag: 23, Correlation: 0.0217
+Cross-correlation: Energy Demand vs. cloud_cover. Optimal lag: 2, Correlation: 0.1865
+Cross-correlation: Energy Demand vs. et0_fao_evapotranspiration. Optimal lag: 12, Correlation: -0.6020
+Cross-correlation: Energy Demand vs. vapour_pressure_deficit. Optimal lag: 11, Correlation: -0.4854
+Cross-correlation: Energy Demand vs. wind_speed_10m. Optimal lag: 0, Correlation: 0.2218
+Cross-correlation: Energy Demand vs. wind_speed_100m. Optimal lag: 13, Correlation: 0.1885
+Cross-correlation: Energy Demand vs. wind_direction_10m. Optimal lag: 0, Correlation: 0.0828
+Cross-correlation: Energy Demand vs. wind_direction_100m. Optimal lag: 0, Correlation: 0.0790
+Cross-correlation: Energy Demand vs. wet_bulb_temperature_2m. Optimal lag: 11, Correlation: -0.4360
+Cross-correlation: Energy Demand vs. sunshine_duration. Optimal lag: 12, Correlation: -0.5919
+Cross-correlation: Energy Demand vs. shortwave_radiation. Optimal lag: 13, Correlation: -0.6254
+Cross-correlation: Energy Demand vs. diffuse_radiation. Optimal lag: 12, Correlation: -0.6529
+Cross-correlation: Energy Demand vs. pm10. Optimal lag: 11, Correlation: 0.1487
+Cross-correlation: Energy Demand vs. pm2_5. Optimal lag: 10, Correlation: 0.2068
+Cross-correlation: Energy Demand vs. carbon_monoxide. Optimal lag: 11, Correlation: 0.2833
+Cross-correlation: Energy Demand vs. sulphur_dioxide. Optimal lag: 0, Correlation: 0.3294
+Cross-correlation: Energy Demand vs. ozone. Optimal lag: 10, Correlation: -0.4437
+Cross-correlation: Energy Demand vs. dust. Optimal lag: 9, Correlation: -0.0730
+Cross-correlation: Energy Demand vs. ammonia. Optimal lag: 0, Correlation: -0.1686
+Granger causality test for temperature_2m on Energy Demand: p-value = 0.0000.
+Granger causality test for relative_humidity_2m on Energy Demand: p-value = 0.0000.
+Granger causality test for dew_point_2m on Energy Demand: p-value = 0.0000.
+Granger causality test for apparent_temperature on Energy Demand: p-value = 0.0000.
+Granger causality test for precipitation on Energy Demand: p-value = 0.0000.
+Granger causality test for rain on Energy Demand: p-value = 0.0000.
+Granger causality test for surface_pressure on Energy Demand: p-value = 0.0000.
+Granger causality test for cloud_cover on Energy Demand: p-value = 0.0000.
+Granger causality test for et0_fao_evapotranspiration on Energy Demand: p-value = 0.0000.
+Granger causality test for vapour_pressure_deficit on Energy Demand: p-value = 0.0000.
+Granger causality test for wind_speed_10m on Energy Demand: p-value = 0.0000.
+Granger causality test for wind_speed_100m on Energy Demand: p-value = 0.0000.
+Granger causality test for wind_direction_10m on Energy Demand: p-value = 0.0000.
+Granger causality test for wind_direction_100m on Energy Demand: p-value = 0.0001.
+Granger causality test for wet_bulb_temperature_2m on Energy Demand: p-value = 0.0000.
+Granger causality test for sunshine_duration on Energy Demand: p-value = 0.0000.
+Granger causality test for shortwave_radiation on Energy Demand: p-value = 0.0000.
+Granger causality test for diffuse_radiation on Energy Demand: p-value = 0.0000.
+Granger causality test for pm10 on Energy Demand: p-value = 0.0000.
+Granger causality test for pm2_5 on Energy Demand: p-value = 0.0000.
+Granger causality test for carbon_monoxide on Energy Demand: p-value = 0.0000.
+Granger causality test for sulphur_dioxide on Energy Demand: p-value = 0.0000.
+Granger causality test for ozone on Energy Demand: p-value = 0.0000.
+Granger causality test for dust on Energy Demand: p-value = 0.0000.
+Granger causality test for ammonia on Energy Demand: p-value = 0.0000.
+Granger causality test results saved: scripts/data_analysis/energy/eda_report_22_25_1/stats/granger_causality_results.csv.
+Scatter plot for temperature_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_temperature_2m_lag0.pdf.
+Scatter plot for relative_humidity_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_relative_humidity_2m_lag0.pdf.
+Scatter plot for dew_point_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_dew_point_2m_lag0.pdf.
+Scatter plot for apparent_temperature with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_apparent_temperature_lag0.pdf.
+Scatter plot for precipitation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_precipitation_lag0.pdf.
+Scatter plot for rain with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_rain_lag0.pdf.
+Scatter plot for surface_pressure with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_surface_pressure_lag0.pdf.
+Scatter plot for cloud_cover with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_cloud_cover_lag0.pdf.
+Scatter plot for et0_fao_evapotranspiration with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_et0_fao_evapotranspiration_lag0.pdf.
+Scatter plot for vapour_pressure_deficit with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_vapour_pressure_deficit_lag0.pdf.
+Scatter plot for wind_speed_10m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_wind_speed_10m_lag0.pdf.
+Scatter plot for wind_speed_100m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_wind_speed_100m_lag0.pdf.
+Scatter plot for wind_direction_10m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_wind_direction_10m_lag0.pdf.
+Scatter plot for wind_direction_100m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_wind_direction_100m_lag0.pdf.
+Scatter plot for wet_bulb_temperature_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_wet_bulb_temperature_2m_lag0.pdf.
+Scatter plot for sunshine_duration with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_sunshine_duration_lag0.pdf.
+Scatter plot for shortwave_radiation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_shortwave_radiation_lag0.pdf.
+Scatter plot for diffuse_radiation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_diffuse_radiation_lag0.pdf.
+Scatter plot for pm10 with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_pm10_lag0.pdf.
+Scatter plot for pm2_5 with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_pm2_5_lag0.pdf.
+Scatter plot for carbon_monoxide with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_carbon_monoxide_lag0.pdf.
+Scatter plot for sulphur_dioxide with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_sulphur_dioxide_lag0.pdf.
+Scatter plot for ozone with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_ozone_lag0.pdf.
+Scatter plot for dust with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_dust_lag0.pdf.
+Scatter plot for ammonia with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/coloured_scatter_Energy Demand_ammonia_lag0.pdf.
+Scatter plot for temperature_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_temperature_2m_lag0.pdf.
+Scatter plot for relative_humidity_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_relative_humidity_2m_lag0.pdf.
+Scatter plot for dew_point_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_dew_point_2m_lag0.pdf.
+Scatter plot for apparent_temperature with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_apparent_temperature_lag0.pdf.
+Scatter plot for precipitation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_precipitation_lag0.pdf.
+Scatter plot for rain with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_rain_lag0.pdf.
+Scatter plot for surface_pressure with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_surface_pressure_lag0.pdf.
+Scatter plot for cloud_cover with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_cloud_cover_lag0.pdf.
+Scatter plot for et0_fao_evapotranspiration with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_et0_fao_evapotranspiration_lag0.pdf.
+Scatter plot for vapour_pressure_deficit with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_vapour_pressure_deficit_lag0.pdf.
+Scatter plot for wind_speed_10m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_wind_speed_10m_lag0.pdf.
+Scatter plot for wind_speed_100m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_wind_speed_100m_lag0.pdf.
+Scatter plot for wind_direction_10m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_wind_direction_10m_lag0.pdf.
+Scatter plot for wind_direction_100m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_wind_direction_100m_lag0.pdf.
+Scatter plot for wet_bulb_temperature_2m with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_wet_bulb_temperature_2m_lag0.pdf.
+Scatter plot for sunshine_duration with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_sunshine_duration_lag0.pdf.
+Scatter plot for shortwave_radiation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_shortwave_radiation_lag0.pdf.
+Scatter plot for diffuse_radiation with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_diffuse_radiation_lag0.pdf.
+Scatter plot for pm10 with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_pm10_lag0.pdf.
+Scatter plot for pm2_5 with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_pm2_5_lag0.pdf.
+Scatter plot for carbon_monoxide with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_carbon_monoxide_lag0.pdf.
+Scatter plot for sulphur_dioxide with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_sulphur_dioxide_lag0.pdf.
+Scatter plot for ozone with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_ozone_lag0.pdf.
+Scatter plot for dust with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_dust_lag0.pdf.
+Scatter plot for ammonia with lag 0 saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_Energy Demand_ammonia_lag0.pdf.
+
+V. Nonlinearity Tests:
+BDS test on Energy Demand: p-value = nan.
+Scatter plots for squared and cubed transformations saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_squared.pdf, scripts/data_analysis/energy/eda_report_22_25_1/plots/scatter_cubed.pdf.
+Recurrence plot saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/recurrence_plot.pdf.
+
+VI. Outlier Detection:
+Z-score outlier detection found 0 outliers.
+IQR outlier detection found 0 outliers.
+LOF outlier detection found 19 outliers.
+
+VII. Distribution Analysis:
+Shapiro–Wilk test: p-value = 0.0000.
+D'Agostino test: p-value = 0.0000.
+Jarque–Bera test: p-value = 0.0000.
+Anderson–Darling test statistic: 135.7552.
+Critical values: [0.576 0.656 0.787 0.918 1.092]
+Histogram with density saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/histogram_density.pdf.
+
+VIII. Heteroskedasticity Tests:
+Breusch–Pagan test: p-value = 0.0317.
+Goldfeld–Quandt test: p-value = 1.0000.
+ARCH test: p-value = 0.0000.
+Squared residuals plot saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/squared_residuals.pdf.
+
+IX. Multicollinearity Diagnostics:
+Correlation matrix heatmap saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/correlation_matrix.pdf.
+VIF results:
+                   feature          VIF
+             Energy Demand    56.893515
+            temperature_2m 17085.961145
+      relative_humidity_2m  5391.772495
+              dew_point_2m  1426.935107
+      apparent_temperature  3740.200151
+             precipitation    50.049156
+                      rain    47.281337
+          surface_pressure  7787.297093
+               cloud_cover    18.057096
+et0_fao_evapotranspiration   177.643121
+   vapour_pressure_deficit   315.230791
+            wind_speed_10m   359.685979
+           wind_speed_100m   248.169926
+        wind_direction_10m   592.423784
+       wind_direction_100m   568.902067
+   wet_bulb_temperature_2m 21027.292513
+         sunshine_duration    11.197118
+       shortwave_radiation   148.490947
+         diffuse_radiation    15.772001
+                      pm10   158.029772
+                     pm2_5   118.864981
+           carbon_monoxide    57.757005
+           sulphur_dioxide    23.019745
+                     ozone    43.576275
+                      dust     2.140791
+                   ammonia     4.922742
+
+X. Structural Break Tests:
+Chow test: statistic = 35.509, p-value = 0.0000.
+Structural breakpoints plot saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/structural_breaks.pdf.
+
+XI. Cointegration Tests:
+Johansen cointegration test eigenvalues: [7.16171023e+04 5.70658561e+04 4.56518265e+04 3.54923775e+04
+ 2.88662607e+04 2.32366670e+04 1.91604792e+04 1.59495020e+04
+ 1.32599327e+04 1.09029160e+04 9.35177620e+03 7.90025207e+03
+ 6.54800345e+03 5.39967641e+03 4.47437523e+03 3.58128228e+03
+ 2.72209450e+03 2.12433738e+03 1.68361583e+03 1.30767797e+03
+ 9.72241455e+02 6.74028587e+02 4.25133458e+02 2.56359719e+02
+ 1.25471959e+02 2.99549239e+01].
+
+XII. Missing Values Analysis:
+Missing values per column:
+Energy Demand                 0
+temperature_2m                0
+relative_humidity_2m          0
+dew_point_2m                  0
+apparent_temperature          0
+precipitation                 0
+rain                          0
+surface_pressure              0
+cloud_cover                   0
+et0_fao_evapotranspiration    0
+vapour_pressure_deficit       0
+wind_speed_10m                0
+wind_speed_100m               0
+wind_direction_10m            0
+wind_direction_100m           0
+wet_bulb_temperature_2m       0
+sunshine_duration             0
+shortwave_radiation           0
+diffuse_radiation             0
+pm10                          0
+pm2_5                         0
+carbon_monoxide               0
+sulphur_dioxide               0
+ozone                         0
+dust                          0
+ammonia                       0
+Missing values heatmap saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/missing_values_heatmap.pdf.
+
+XIII. Feature Evaluation:
+OLS Regression Summary:
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          Energy Demand   R-squared:                       0.415
+Model:                            OLS   Adj. R-squared:                  0.414
+Method:                 Least Squares   F-statistic:                     798.0
+Date:                Fri, 28 Mar 2025   Prob (F-statistic):               0.00
+Time:                        14:34:31   Log-Likelihood:                -95737.
+No. Observations:               28197   AIC:                         1.915e+05
+Df Residuals:                   28171   BIC:                         1.917e+05
+Df Model:                          25                                         
+Covariance Type:            nonrobust                                         
+==============================================================================================
+                                 coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------------
+const                         73.6342      7.973      9.235      0.000      58.006      89.262
+temperature_2m                -4.0479      0.557     -7.262      0.000      -5.140      -2.955
+relative_humidity_2m          -0.2938      0.051     -5.706      0.000      -0.395      -0.193
+dew_point_2m                   0.8041      0.202      3.976      0.000       0.408       1.200
+apparent_temperature          -0.7165      0.241     -2.972      0.003      -1.189      -0.244
+precipitation                 19.1187      1.690     11.314      0.000      15.806      22.431
+rain                         -16.7985      1.728     -9.719      0.000     -20.186     -13.411
+surface_pressure              -0.0130      0.006     -2.088      0.037      -0.025      -0.001
+cloud_cover                    0.0394      0.002     15.832      0.000       0.035       0.044
+et0_fao_evapotranspiration    49.9889      3.913     12.775      0.000      42.319      57.659
+vapour_pressure_deficit       10.3064      1.629      6.327      0.000       7.114      13.499
+wind_speed_10m                 0.2811      0.059      4.777      0.000       0.166       0.396
+wind_speed_100m               -0.0340      0.029     -1.171      0.241      -0.091       0.023
+wind_direction_10m            -0.0352      0.005     -6.755      0.000      -0.045      -0.025
+wind_direction_100m            0.0429      0.005      8.544      0.000       0.033       0.053
+wet_bulb_temperature_2m        3.7001      0.738      5.014      0.000       2.254       5.147
+sunshine_duration              0.0029   8.12e-05     35.526      0.000       0.003       0.003
+shortwave_radiation           -0.0365      0.002    -16.722      0.000      -0.041      -0.032
+diffuse_radiation              0.0450      0.002     23.349      0.000       0.041       0.049
+pm10                           0.6136      0.042     14.491      0.000       0.531       0.697
+pm2_5                         -0.9033      0.049    -18.478      0.000      -0.999      -0.807
+carbon_monoxide                0.0312      0.002     17.416      0.000       0.028       0.035
+sulphur_dioxide                7.1573      0.162     44.048      0.000       6.839       7.476
+ozone                         -0.0126      0.005     -2.686      0.007      -0.022      -0.003
+dust                          -0.3018      0.044     -6.890      0.000      -0.388      -0.216
+ammonia                       -0.0387      0.038     -1.029      0.304      -0.112       0.035
+==============================================================================
+Omnibus:                      601.271   Durbin-Watson:                   0.122
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              320.422
+Skew:                           0.032   Prob(JB):                     2.64e-70
+Kurtosis:                       2.482   Cond. No.                     3.56e+05
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.56e+05. This might indicate that there are
+strong multicollinearity or other numerical problems.
+F-test feature importance results:
+                   Feature           F             p
+           sulphur_dioxide 3430.760429  0.000000e+00
+              dew_point_2m 2757.848644  0.000000e+00
+         diffuse_radiation 2572.375966  0.000000e+00
+         sunshine_duration 2320.572749  0.000000e+00
+   wet_bulb_temperature_2m 1961.813452  0.000000e+00
+      apparent_temperature 1563.819337  0.000000e+00
+       shortwave_radiation 1463.443212 3.309234e-312
+            wind_speed_10m 1458.178844 4.048586e-311
+            temperature_2m 1187.202100 7.168422e-255
+           carbon_monoxide 1041.477194 2.106009e-224
+               cloud_cover  912.514691 2.613175e-197
+et0_fao_evapotranspiration  838.369119 1.123650e-181
+                   ammonia  824.864894 7.988025e-179
+           wind_speed_100m  456.786796 1.511977e-100
+      relative_humidity_2m  430.646772  6.030803e-95
+        wind_direction_10m  194.765875  4.064498e-44
+       wind_direction_100m  176.885103  3.068310e-40
+                     pm2_5  165.556583  8.833444e-38
+                      pm10   97.883404  4.838433e-23
+             precipitation   58.828512  1.775670e-14
+                      dust   35.007903  3.321583e-09
+                     ozone   12.551916  3.964395e-04
+                      rain    3.976494  4.614912e-02
+   vapour_pressure_deficit    2.558044  1.097455e-01
+          surface_pressure    0.301028  5.832429e-01
+Mutual information results:
+                   Feature       MI
+         diffuse_radiation 0.167403
+       shortwave_radiation 0.166140
+      apparent_temperature 0.152744
+         sunshine_duration 0.150291
+et0_fao_evapotranspiration 0.145511
+            temperature_2m 0.140572
+   wet_bulb_temperature_2m 0.133045
+              dew_point_2m 0.131480
+   vapour_pressure_deficit 0.078339
+           sulphur_dioxide 0.078060
+                   ammonia 0.073351
+                     ozone 0.070958
+          surface_pressure 0.060853
+           carbon_monoxide 0.057895
+      relative_humidity_2m 0.052074
+           wind_speed_100m 0.043287
+            wind_speed_10m 0.040141
+               cloud_cover 0.038466
+                     pm2_5 0.036767
+        wind_direction_10m 0.024541
+       wind_direction_100m 0.023041
+                      pm10 0.021071
+                      dust 0.013757
+                      rain 0.000384
+             precipitation 0.000000
+Lasso regression coefficients:
+temperature_2m                0.000000
+relative_humidity_2m          0.040909
+dew_point_2m                 -0.000000
+apparent_temperature          0.100458
+precipitation                 0.000000
+rain                          0.000000
+surface_pressure             -0.029793
+cloud_cover                   0.044737
+et0_fao_evapotranspiration    0.000000
+vapour_pressure_deficit       0.000000
+wind_speed_10m                0.376226
+wind_speed_100m               0.001209
+wind_direction_10m           -0.019728
+wind_direction_100m           0.029721
+wet_bulb_temperature_2m      -0.471580
+sunshine_duration             0.002491
+shortwave_radiation          -0.008282
+diffuse_radiation             0.037357
+pm10                          0.366418
+pm2_5                        -0.608714
+carbon_monoxide               0.038668
+sulphur_dioxide               6.164216
+ozone                        -0.000863
+dust                         -0.069196
+ammonia                      -0.165362
+Random Forest feature importances:
+apparent_temperature          0.195916
+diffuse_radiation             0.147907
+shortwave_radiation           0.088045
+sulphur_dioxide               0.069156
+ammonia                       0.053395
+surface_pressure              0.042686
+carbon_monoxide               0.041810
+wind_speed_10m                0.032523
+ozone                         0.030764
+cloud_cover                   0.029368
+pm2_5                         0.026470
+wind_speed_100m               0.026385
+wind_direction_100m           0.025677
+pm10                          0.024133
+dew_point_2m                  0.022431
+wind_direction_10m            0.019550
+dust                          0.018448
+relative_humidity_2m          0.016654
+wet_bulb_temperature_2m       0.014204
+vapour_pressure_deficit       0.014068
+rain                          0.013910
+et0_fao_evapotranspiration    0.013759
+temperature_2m                0.012864
+precipitation                 0.012243
+sunshine_duration             0.007632
+
+XIV. Residual Analysis (Model Based):
+Residuals vs. fitted plot saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/residuals_vs_fitted.pdf.
+QQ plot of residuals saved: scripts/data_analysis/energy/eda_report_22_25_1/plots/qq_plot_residuals.pdf.
+Ljung–Box test on residuals results saved: scripts/data_analysis/energy/eda_report_22_25_1/stats/ljung_box_residuals.csv.
+
+XV. Model Comparison:
+OLS Regression Summary:
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          Energy Demand   R-squared:                       0.126
+Model:                            OLS   Adj. R-squared:                  0.126
+Method:                 Least Squares   F-statistic:                     1360.
+Date:                Fri, 28 Mar 2025   Prob (F-statistic):               0.00
+Time:                        14:37:30   Log-Likelihood:            -1.0138e+05
+No. Observations:               28197   AIC:                         2.028e+05
+Df Residuals:                   28193   BIC:                         2.028e+05
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+const                   86.7854      2.414     35.954      0.000      82.054      91.516
+temperature_2m          -0.8720      0.109     -7.990      0.000      -1.086      -0.658
+relative_humidity_2m    -0.3411      0.026    -13.374      0.000      -0.391      -0.291
+dew_point_2m             0.3596      0.113      3.183      0.001       0.138       0.581
+==============================================================================
+Omnibus:                     4119.619   Durbin-Watson:                   0.069
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1026.505
+Skew:                           0.107   Prob(JB):                    1.25e-223
+Kurtosis:                       2.090   Cond. No.                     3.66e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.66e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+ANOVA model comparison results:
+   df_resid           ssr  df_diff        ss_diff           F  Pr(>F)
+0   28193.0  2.191120e+06      0.0            NaN         NaN     NaN
+1   28171.0  1.468392e+06     22.0  722728.154517  630.249533     0.0

@@ -1,0 +1,3393 @@
+# ==============================================
+# File: /configs/energy/lstm.yml
+# Beschreibung: LSTM-Modell-Konfiguration für "energy" Dataset
+# ==============================================
+
+dataset: no2              # Name des Datensatzes
+model: lstm                  # Unser neuer Modelltyp
+quantiles: [0.025, 0.25, 0.5, 0.75, 0.975]
+
+optuna_search_space:
+  param_space:
+    hidden_size: [16, 256]        # [min, max]
+    num_layers: [1, 3]            # [min, max]
+    dropout: [0.0, 0.5]           # [min, max]
+    learning_rate: [0.00001, 0.01]  # [min, max] (log=True)
+    epochs: [10, 130]             # [min, max]
+    batch_size: [16, 200]         # [min, max]
+    weight_decay: [0.00001, 0.001] # [min, max]
+    optimizer: [adam, sgd, AdamW]
+    bias: [true, false]
+    seq_length: [2, 168]         # [min, max]
+    gradient_clipping:
+      enabled: [true, false]
+      clip_norm: [1.0, 10.0]
+      norm_type: 2.0
+      method: [norm]
+
+versions:
+  v1.0.0:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: false
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 10000000000
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false      # Ob Hyperparameter-Tuning mit Optuna erfolgen soll
+      n_trials: 15
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+
+      target:
+        lags: [24, 168]
+
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 128
+      num_layers: 2
+      bias: true
+      dropout: 0.2
+      learning_rate: 0.001
+      epochs: 50
+      batch_size: 64
+      seq_length: 168
+      weight_decay: 0.0001
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 2.0877458667118156
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+  v1.0.1:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: false
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 1000
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: rolling_cv
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false      # Ob Hyperparameter-Tuning mit Optuna erfolgen soll
+      n_trials: 15
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+
+      target:
+        lags: [24, 168]
+
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 128
+      num_layers: 2
+      bias: true
+      dropout: 0.2
+      learning_rate: 0.001
+      epochs: 50
+      batch_size: 64
+      seq_length: 168
+      weight_decay: 0.0001
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 2.0877458667118156
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.0.2:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: true      # Ob Hyperparameter-Tuning mit Optuna erfolgen soll
+      n_trials: 20
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+
+      target:
+        lags: [24, 168]
+
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+  v1.0.3:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.98                   # Anteil der Daten fürs Training
+    test_size: 0.02                    # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False      # Ob Hyperparameter-Tuning mit Optuna erfolgen soll
+      n_trials: 20
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+
+      target:
+        lags: [24, 168]
+
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+
+  v1.1.0:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+  v1.1.1:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.1.2:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+
+
+  v1.1.3:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.1.4:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 10
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 171
+      num_layers: 1
+      bias: false
+      dropout: 0.25353439462929134
+      learning_rate: 0.0006657200618227318
+      epochs: 86
+      batch_size: 57
+      seq_length: 168
+      weight_decay: 0.0003636768325631394
+      optimizer: adam
+      gradient_clipping:
+        enabled: false
+        norm_type:               # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+
+
+  v1.1.5:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 10
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: [24, 168]
+            features: [surface_pressure, temperature_2m]
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 118
+      num_layers: 1
+      bias: false
+      dropout: 0.2533806820271482
+      learning_rate: 0.0016499273198463985
+      epochs: 63
+      batch_size: 52
+      seq_length: 168
+      weight_decay: 3.0128196859961952e-05
+      optimizer: sgd
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 7.222329956286566
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+
+  v1.2.2:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 10
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 221
+      num_layers: 1
+      bias: false
+      dropout: 0.2678473361367835
+      learning_rate: 5.439119117385537e-05
+      epochs: 96
+      batch_size: 23
+      seq_length: 168
+      weight_decay: 7.537192357493325e-05
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 6.152847429908965
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.2.3:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - snowfall
+          - snow_depth
+          - pressure_msl
+          - cloud_cover_low
+          - cloud_cover_mid
+          - cloud_cover_high
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wind_gusts_10m
+          - soil_temperature_0_to_7cm
+          - soil_moisture_0_to_7cm
+          - wet_bulb_temperature_2m
+          - shortwave_radiation
+          - direct_radiation
+          - diffuse_radiation
+          - direct_normal_irradiance
+          - global_tilted_irradiance
+          - terrestrial_radiation
+          - shortwave_radiation_instant
+          - direct_radiation_instant
+          - diffuse_radiation_instant
+          - direct_normal_irradiance_instant
+          - global_tilted_irradiance_instant
+          - terrestrial_radiation_instant
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 24]
+            features:
+              - temperature_2m
+              - rain
+              - surface_pressure
+              - cloud_cover
+              - wind_speed_100m
+              - sunshine_duration
+              - pm10
+              - pm2_5
+              - carbon_monoxide
+              - sulphur_dioxide
+              - ozone
+              - dust
+              - ammonia
+              - relative_humidity_2m
+              - dew_point_2m
+              - apparent_temperature
+              - precipitation
+              - snowfall
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 72
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 33
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+  v1.2.4:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 72
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 33
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.2.5:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: rolling_cv
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 72
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.2.6:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: rolling_cv
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [6, 7, 8, 9, 24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 72
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.2.7:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: rolling_cv
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+  v1.2.8:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize
+        time:
+          enabled: false
+          method: standardize
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.2.9:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: standardize
+        time:
+          enabled: True
+          method: standardize
+        lag:
+          enabled: False
+          method: standardize
+        exog:
+          enabled: True
+          method: standardize
+        advanced:
+          enabled: True
+          method: standardize
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+  v1.3.0:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: minmax
+        time:
+          enabled: True
+          method: minmax
+        lag:
+          enabled: True
+          method: minmax
+        exog:
+          enabled: True
+          method: minmax
+        advanced:
+          enabled: True
+          method: minmax
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+  v1.3.1:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 20
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: minmax
+        time:
+          enabled: True
+          method: minmax
+        lag:
+          enabled: True
+          method: minmax
+        exog:
+          enabled: True
+          method: minmax
+        advanced:
+          enabled: True
+          method: minmax
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 10
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+  v1.3.2:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 6
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: simple_split
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: minmax
+        time:
+          enabled: True
+          method: minmax
+        lag:
+          enabled: True
+          method: minmax
+        exog:
+          enabled: True
+          method: minmax
+        advanced:
+          enabled: True
+          method: minmax
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+          - direct_normal_irradiance
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 5
+      bias: false
+      dropout: 0.13172625905853064
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+  v1.3.3:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: minmax
+        time:
+          enabled: True
+          method: minmax
+        lag:
+          enabled: True
+          method: minmax
+        exog:
+          enabled: True
+          method: minmax
+        advanced:
+          enabled: True
+          method: minmax
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 131
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: adam
+      gradient_clipping:
+        enabled: true
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+
+  v1.3.4:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 5
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 25
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: minmax
+        time:
+          enabled: True
+          method: minmax
+        lag:
+          enabled: True
+          method: minmax
+        exog:
+          enabled: True
+          method: minmax
+        advanced:
+          enabled: True
+          method: minmax
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+
+    # LSTM-spezifische Default-Parameter
+    params:
+      hidden_size: 1040
+      num_layers: 1
+      bias: false
+      dropout: 0.09086426317778568
+      learning_rate: 0.0003101509986082592
+      epochs: 71
+      batch_size: 84
+      seq_length: 168
+      weight_decay: 0.00015378950501174186
+      optimizer: Adadelta
+      gradient_clipping:
+        enabled: False
+        norm_type: 2.0           # optional, default=2.0 (L2-Norm)
+        clip_norm: 1.0280464475989577
+    forecast_approach: iterative
+    forecast_horizon: 1
+
+
+
+  v1.3.5:
+    start_date: '2022-01-01 00:00:00'
+    train_size: 0.9                   # Anteil der Daten fürs Training
+    test_size: 0.1                     # Anteil für Test
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: true
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds: 4
+    # Imputationsmethode (exemplarisch)
+    imputation_method:
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+
+    # Trainingsmodus: simple_split oder rolling_cv
+    training_mode: rolling_cv
+
+    # CV-Einstellungen (falls rolling_cv genutzt wird)
+    cv_settings:
+      window_type: expanding
+      test_window: 1W
+      optuna_folds: 1
+
+    optuna:
+      use_optuna: False         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 30
+      n_splits: 2
+      direction: minimize
+      metric: pinball_loss
+      quantile: 0.5
+
+    feature_selection:
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: False
+          method: standardize
+        time:
+          enabled: False
+          method: standardize
+        lag:
+          enabled: False
+          method: standardize
+        exog:
+          enabled: True
+          method: standardize
+        advanced:
+          enabled: True
+          method: standardize
+      target:
+        lags: [168, 336]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - sunshine_duration
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - sulphur_dioxide
+          - ozone
+          - dust
+          - ammonia
+          - relative_humidity_2m
+          - dew_point_2m
+          - apparent_temperature
+          - precipitation
+          - pressure_msl
+          - cloud_cover_low
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - wind_speed_100m
+          - wind_direction_10m
+          - wind_direction_100m
+          - wet_bulb_temperature_2m
+
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: [1,2,3,4,5,6, 7, 8, 9, 12, 24]
+            features:
+             - temperature_2m
+             - rain
+             - surface_pressure
+             - cloud_cover
+             - wind_speed_10m
+             - sunshine_duration
+             - pm10
+             - pm2_5
+             - carbon_monoxide
+             - sulphur_dioxide
+             - ozone
+             - dust
+             - ammonia
+             - relative_humidity_2m
+             - dew_point_2m
+             - apparent_temperature
+             - precipitation
+             - pressure_msl
+             - cloud_cover_low
+             - et0_fao_evapotranspiration
+             - vapour_pressure_deficit
+             - wind_speed_100m
+             - wind_direction_10m
+             - wind_direction_100m
+             - wet_bulb_temperature_2m
+             - direct_normal_irradiance
+
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      hidden_size: 240
+      num_layers: 1
+      bias: false
+      dropout: 0.0
+      learning_rate: 0.0005533349167165207
+      epochs: 40
+      batch_size: 129
+      seq_length: 149
+      weight_decay: 0.00012504631225651337
+      optimizer: AdamW
+      gradient_clipping:
+        enabled: false
+        norm_type:                 # optional, default=2.0 (L2-Norm)
+        clip_norm:
+    forecast_approach: iterative
+    forecast_horizon: 1

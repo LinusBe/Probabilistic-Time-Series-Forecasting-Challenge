@@ -1,0 +1,29 @@
+# ==============================================
+# File: /configs/default/paths.yml
+# Description: Contains global path configurations 
+# for different datasets (e.g., NO2, Energy) and 
+# default save paths for models/results/logs.
+# ==============================================
+
+energy:
+  data_file: data/raw/energy/energy_data.csv
+  exogenous_files:
+    - data/weather/history/germany/current.csv
+    - data/weather/forecasts/germany/current.csv
+    - data/air/history/germany/current.csv
+    - data/air/forecasts/germany/current.csv
+
+no2:
+  data_file: data/raw/no2/no2_data.csv
+  exogenous_files:
+    - data/weather/history/karlsruhe/current.csv
+    - data/weather/forecasts/karlsruhe/current.csv
+    - data/air/history/karlsruhe/current.csv
+    - data/air/forecasts/karlsruhe/current.csv
+
+save_paths:
+  base_output: "output"
+  logs_subfolder: "logs"
+  results_subfolder: "results"
+  predictions_subfolder: "predictions"
+  plots_subfolder: "plots"

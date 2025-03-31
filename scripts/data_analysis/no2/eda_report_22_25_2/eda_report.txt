@@ -1,0 +1,428 @@
+Classical seasonal decomposition completed. Plot saved as: scripts/data_analysis/no2/eda_report_22_25_2/plots/seasonal_decomposition.pdf.
+Residuals saved as CSV: scripts/data_analysis/no2/eda_report_22_25_2/plots/seasonal_decomposition_residuals.csv.
+Full Time Series EDA Report
+============================================================
+Target Variable: NO$_2$ Concentration
+Time Range: 2022-01-01 00:00:00+00:00 to 2025-03-20 20:00:00+00:00
+
+I. Stationarity Tests:
+ADF test (d=0): p-value = 6.89e-28.
+ADF test (d=1): p-value = 0.00e+00.
+KPSS test (d=0): p-value = 0.0100.
+KPSS test (d=1): p-value = 0.1000.
+Rolling statistics plot saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/rolling_statistics.pdf.
+
+II. Autocorrelation Analysis:
+ACF and PACF plots saved (up to 100 lags): scripts/data_analysis/no2/eda_report_22_25_2/plots/acf_pacf.pdf.
+Ljung–Box test results for lags [10, 20]:
+          lb_stat  lb_pvalue
+10   81252.270115        0.0
+20  101818.210957        0.0
+Autocorrelation heatmap saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/autocorrelation_heatmap.pdf.
+
+III. Seasonality Analysis:
+Classical seasonal decomposition completed. Plot saved as: scripts/data_analysis/no2/eda_report_22_25_2/plots/seasonal_decomposition.pdf.
+STL decomposition completed. Plot saved as: scripts/data_analysis/no2/eda_report_22_25_2/plots/stl_decomposition.pdf.
+Boxplots by month, weekday, and hour saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/boxplot_by_month.pdf, scripts/data_analysis/no2/eda_report_22_25_2/plots/boxplot_by_weekday.pdf, scripts/data_analysis/no2/eda_report_22_25_2/plots/boxplot_by_hour.pdf.
+
+IV. Exogenous and Cross-Correlation Analysis:
+Cross-correlation: NO$_2$ Concentration vs. temperature_2m. Optimal lag: 14, Correlation: -0.2496
+Cross-correlation: NO$_2$ Concentration vs. relative_humidity_2m. Optimal lag: 14, Correlation: 0.1468
+Cross-correlation: NO$_2$ Concentration vs. dew_point_2m. Optimal lag: 17, Correlation: -0.2380
+Cross-correlation: NO$_2$ Concentration vs. apparent_temperature. Optimal lag: 15, Correlation: -0.2275
+Cross-correlation: NO$_2$ Concentration vs. precipitation. Optimal lag: 8, Correlation: -0.0800
+Cross-correlation: NO$_2$ Concentration vs. rain. Optimal lag: 8, Correlation: -0.0813
+Cross-correlation: NO$_2$ Concentration vs. surface_pressure. Optimal lag: 10, Correlation: 0.1490
+Cross-correlation: NO$_2$ Concentration vs. cloud_cover. Optimal lag: 22, Correlation: -0.0603
+Cross-correlation: NO$_2$ Concentration vs. et0_fao_evapotranspiration. Optimal lag: 14, Correlation: -0.1948
+Cross-correlation: NO$_2$ Concentration vs. vapour_pressure_deficit. Optimal lag: 13, Correlation: -0.1511
+Cross-correlation: NO$_2$ Concentration vs. wind_speed_10m. Optimal lag: 13, Correlation: -0.2541
+Cross-correlation: NO$_2$ Concentration vs. wind_speed_100m. Optimal lag: 7, Correlation: -0.2279
+Cross-correlation: NO$_2$ Concentration vs. wind_direction_10m. Optimal lag: 7, Correlation: 0.0528
+Cross-correlation: NO$_2$ Concentration vs. wind_direction_100m. Optimal lag: 7, Correlation: 0.0438
+Cross-correlation: NO$_2$ Concentration vs. wet_bulb_temperature_2m. Optimal lag: 15, Correlation: -0.2520
+Cross-correlation: NO$_2$ Concentration vs. sunshine_duration. Optimal lag: 6, Correlation: 0.1189
+Cross-correlation: NO$_2$ Concentration vs. shortwave_radiation. Optimal lag: 15, Correlation: -0.1676
+Cross-correlation: NO$_2$ Concentration vs. diffuse_radiation. Optimal lag: 14, Correlation: -0.2244
+Cross-correlation: NO$_2$ Concentration vs. pm10. Optimal lag: 0, Correlation: 0.4052
+Cross-correlation: NO$_2$ Concentration vs. pm2_5. Optimal lag: 0, Correlation: 0.3727
+Cross-correlation: NO$_2$ Concentration vs. carbon_monoxide. Optimal lag: 0, Correlation: 0.4369
+Cross-correlation: NO$_2$ Concentration vs. sulphur_dioxide. Optimal lag: 8, Correlation: 0.3419
+Cross-correlation: NO$_2$ Concentration vs. ozone. Optimal lag: 0, Correlation: -0.2830
+Cross-correlation: NO$_2$ Concentration vs. dust. Optimal lag: 0, Correlation: 0.0905
+Cross-correlation: NO$_2$ Concentration vs. ammonia. Optimal lag: 0, Correlation: 0.2224
+Granger causality test for temperature_2m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for relative_humidity_2m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for dew_point_2m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for apparent_temperature on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for precipitation on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for rain on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for surface_pressure on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for cloud_cover on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for et0_fao_evapotranspiration on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for vapour_pressure_deficit on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for wind_speed_10m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for wind_speed_100m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for wind_direction_10m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for wind_direction_100m on NO$_2$ Concentration: p-value = 0.0003.
+Granger causality test for wet_bulb_temperature_2m on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for sunshine_duration on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for shortwave_radiation on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for diffuse_radiation on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for pm10 on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for pm2_5 on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for carbon_monoxide on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for sulphur_dioxide on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for ozone on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for dust on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test for ammonia on NO$_2$ Concentration: p-value = 0.0000.
+Granger causality test results saved: scripts/data_analysis/no2/eda_report_22_25_2/stats/granger_causality_results.csv.
+Scatter plot for temperature_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_temperature_2m_lag0.pdf.
+Scatter plot for relative_humidity_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_relative_humidity_2m_lag0.pdf.
+Scatter plot for dew_point_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_dew_point_2m_lag0.pdf.
+Scatter plot for apparent_temperature with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_apparent_temperature_lag0.pdf.
+Scatter plot for precipitation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_precipitation_lag0.pdf.
+Scatter plot for rain with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_rain_lag0.pdf.
+Scatter plot for surface_pressure with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_surface_pressure_lag0.pdf.
+Scatter plot for cloud_cover with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_cloud_cover_lag0.pdf.
+Scatter plot for et0_fao_evapotranspiration with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_et0_fao_evapotranspiration_lag0.pdf.
+Scatter plot for vapour_pressure_deficit with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_vapour_pressure_deficit_lag0.pdf.
+Scatter plot for wind_speed_10m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_wind_speed_10m_lag0.pdf.
+Scatter plot for wind_speed_100m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_wind_speed_100m_lag0.pdf.
+Scatter plot for wind_direction_10m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_wind_direction_10m_lag0.pdf.
+Scatter plot for wind_direction_100m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_wind_direction_100m_lag0.pdf.
+Scatter plot for wet_bulb_temperature_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_wet_bulb_temperature_2m_lag0.pdf.
+Scatter plot for sunshine_duration with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_sunshine_duration_lag0.pdf.
+Scatter plot for shortwave_radiation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_shortwave_radiation_lag0.pdf.
+Scatter plot for diffuse_radiation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_diffuse_radiation_lag0.pdf.
+Scatter plot for pm10 with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_pm10_lag0.pdf.
+Scatter plot for pm2_5 with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_pm2_5_lag0.pdf.
+Scatter plot for carbon_monoxide with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_carbon_monoxide_lag0.pdf.
+Scatter plot for sulphur_dioxide with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_sulphur_dioxide_lag0.pdf.
+Scatter plot for ozone with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_ozone_lag0.pdf.
+Scatter plot for dust with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_dust_lag0.pdf.
+Scatter plot for ammonia with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/coloured_scatter_NO$_2$ Concentration_ammonia_lag0.pdf.
+Scatter plot for temperature_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_temperature_2m_lag0.pdf.
+Scatter plot for relative_humidity_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_relative_humidity_2m_lag0.pdf.
+Scatter plot for dew_point_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_dew_point_2m_lag0.pdf.
+Scatter plot for apparent_temperature with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_apparent_temperature_lag0.pdf.
+Scatter plot for precipitation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_precipitation_lag0.pdf.
+Scatter plot for rain with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_rain_lag0.pdf.
+Scatter plot for surface_pressure with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_surface_pressure_lag0.pdf.
+Scatter plot for cloud_cover with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_cloud_cover_lag0.pdf.
+Scatter plot for et0_fao_evapotranspiration with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_et0_fao_evapotranspiration_lag0.pdf.
+Scatter plot for vapour_pressure_deficit with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_vapour_pressure_deficit_lag0.pdf.
+Scatter plot for wind_speed_10m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_wind_speed_10m_lag0.pdf.
+Scatter plot for wind_speed_100m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_wind_speed_100m_lag0.pdf.
+Scatter plot for wind_direction_10m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_wind_direction_10m_lag0.pdf.
+Scatter plot for wind_direction_100m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_wind_direction_100m_lag0.pdf.
+Scatter plot for wet_bulb_temperature_2m with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_wet_bulb_temperature_2m_lag0.pdf.
+Scatter plot for sunshine_duration with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_sunshine_duration_lag0.pdf.
+Scatter plot for shortwave_radiation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_shortwave_radiation_lag0.pdf.
+Scatter plot for diffuse_radiation with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_diffuse_radiation_lag0.pdf.
+Scatter plot for pm10 with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_pm10_lag0.pdf.
+Scatter plot for pm2_5 with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_pm2_5_lag0.pdf.
+Scatter plot for carbon_monoxide with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_carbon_monoxide_lag0.pdf.
+Scatter plot for sulphur_dioxide with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_sulphur_dioxide_lag0.pdf.
+Scatter plot for ozone with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_ozone_lag0.pdf.
+Scatter plot for dust with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_dust_lag0.pdf.
+Scatter plot for ammonia with lag 0 saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_NO$_2$ Concentration_ammonia_lag0.pdf.
+
+V. Nonlinearity Tests:
+BDS test on NO$_2$ Concentration: p-value = nan.
+Scatter plots for squared and cubed transformations saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_squared.pdf, scripts/data_analysis/no2/eda_report_22_25_2/plots/scatter_cubed.pdf.
+Recurrence plot saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/recurrence_plot.pdf.
+
+VI. Outlier Detection:
+Z-score outlier detection found 336 outliers.
+IQR outlier detection found 655 outliers.
+LOF outlier detection found 404 outliers.
+
+VII. Distribution Analysis:
+Shapiro–Wilk test: p-value = 0.0000.
+D'Agostino test: p-value = 0.0000.
+Jarque–Bera test: p-value = 0.0000.
+Anderson–Darling test statistic: 392.1207.
+Critical values: [0.576 0.656 0.787 0.918 1.092]
+Histogram with density saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/histogram_density.pdf.
+
+VIII. Heteroskedasticity Tests:
+Breusch–Pagan test: p-value = 0.0000.
+Goldfeld–Quandt test: p-value = 1.0000.
+ARCH test: p-value = 0.0000.
+Squared residuals plot saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/squared_residuals.pdf.
+
+IX. Multicollinearity Diagnostics:
+Correlation matrix heatmap saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/correlation_matrix.pdf.
+VIF results:
+                   feature          VIF
+      NO$_2$ Concentration     5.568038
+            temperature_2m 10729.149168
+      relative_humidity_2m  2076.737658
+              dew_point_2m   609.045170
+      apparent_temperature  2700.827597
+             precipitation   114.801790
+                      rain   114.524784
+          surface_pressure  3097.124147
+               cloud_cover     5.516643
+et0_fao_evapotranspiration   103.176600
+   vapour_pressure_deficit   259.804210
+            wind_speed_10m    85.759648
+           wind_speed_100m    41.778338
+        wind_direction_10m    11.752351
+       wind_direction_100m    11.924969
+   wet_bulb_temperature_2m 13150.219903
+         sunshine_duration     6.172017
+       shortwave_radiation    78.008325
+         diffuse_radiation     5.822364
+                      pm10    88.648771
+                     pm2_5    68.415962
+           carbon_monoxide    41.056708
+           sulphur_dioxide     4.819328
+                     ozone    20.006364
+                      dust     2.026984
+                   ammonia     4.644836
+
+X. Structural Break Tests:
+Chow test: statistic = 58.280, p-value = 0.0000.
+Structural breakpoints plot saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/structural_breaks.pdf.
+
+XI. Cointegration Tests:
+Johansen cointegration test eigenvalues: [7.87450680e+04 6.95371591e+04 6.07891138e+04 5.34868085e+04
+ 4.63992761e+04 4.05637060e+04 3.51708898e+04 3.08030472e+04
+ 2.69924397e+04 2.36152659e+04 2.05168628e+04 1.76148834e+04
+ 1.48665331e+04 1.23188376e+04 1.02415448e+04 8.42443843e+03
+ 6.81322377e+03 5.29847031e+03 3.92782261e+03 2.79098930e+03
+ 2.04997217e+03 1.40992217e+03 9.21691785e+02 5.03298689e+02
+ 1.72111805e+02 7.15382596e+01].
+
+XII. Missing Values Analysis:
+Missing values per column:
+NO$_2$ Concentration          0
+temperature_2m                0
+relative_humidity_2m          0
+dew_point_2m                  0
+apparent_temperature          0
+precipitation                 0
+rain                          0
+surface_pressure              0
+cloud_cover                   0
+et0_fao_evapotranspiration    0
+vapour_pressure_deficit       0
+wind_speed_10m                0
+wind_speed_100m               0
+wind_direction_10m            0
+wind_direction_100m           0
+wet_bulb_temperature_2m       0
+sunshine_duration             0
+shortwave_radiation           0
+diffuse_radiation             0
+pm10                          0
+pm2_5                         0
+carbon_monoxide               0
+sulphur_dioxide               0
+ozone                         0
+dust                          0
+ammonia                       0
+Missing values heatmap saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/missing_values_heatmap.pdf.
+
+XIII. Feature Evaluation:
+OLS Regression Summary:
+                             OLS Regression Results                             
+================================================================================
+Dep. Variable:     NO$_2$ Concentration   R-squared:                       0.307
+Model:                              OLS   Adj. R-squared:                  0.306
+Method:                   Least Squares   F-statistic:                     499.2
+Date:                  Fri, 28 Mar 2025   Prob (F-statistic):               0.00
+Time:                          14:49:07   Log-Likelihood:            -1.1005e+05
+No. Observations:                 28197   AIC:                         2.202e+05
+Df Residuals:                     28171   BIC:                         2.204e+05
+Df Model:                            25                                         
+Covariance Type:              nonrobust                                         
+==============================================================================================
+                                 coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------------
+const                        185.0849     10.390     17.813      0.000     164.719     205.451
+temperature_2m                -1.9868      0.555     -3.579      0.000      -3.075      -0.899
+relative_humidity_2m          -0.3394      0.047     -7.282      0.000      -0.431      -0.248
+dew_point_2m                   2.5526      0.190     13.446      0.000       2.180       2.925
+apparent_temperature           1.8916      0.275      6.868      0.000       1.352       2.431
+precipitation                  4.6267      1.617      2.862      0.004       1.458       7.795
+rain                          -3.5648      1.633     -2.183      0.029      -6.765      -0.365
+surface_pressure              -0.1399      0.009    -15.096      0.000      -0.158      -0.122
+cloud_cover                   -0.0013      0.002     -0.609      0.543      -0.006       0.003
+et0_fao_evapotranspiration    -2.0830      4.348     -0.479      0.632     -10.605       6.439
+vapour_pressure_deficit        6.8785      1.570      4.381      0.000       3.801       9.956
+wind_speed_10m                 0.0731      0.057      1.273      0.203      -0.039       0.186
+wind_speed_100m                0.0623      0.023      2.747      0.006       0.018       0.107
+wind_direction_10m            -0.0023      0.001     -1.880      0.060      -0.005    9.65e-05
+wind_direction_100m            0.0161      0.001     13.482      0.000       0.014       0.018
+wet_bulb_temperature_2m       -3.3623      0.782     -4.300      0.000      -4.895      -1.830
+sunshine_duration           1.954e-05      9e-05      0.217      0.828      -0.000       0.000
+shortwave_radiation           -0.0157      0.002     -6.307      0.000      -0.021      -0.011
+diffuse_radiation              0.0331      0.002     17.405      0.000       0.029       0.037
+pm10                           1.4166      0.043     32.970      0.000       1.332       1.501
+pm2_5                         -1.5634      0.050    -31.569      0.000      -1.660      -1.466
+carbon_monoxide                0.0664      0.002     31.034      0.000       0.062       0.071
+sulphur_dioxide                0.6742      0.069      9.808      0.000       0.539       0.809
+ozone                         -0.1060      0.005    -19.689      0.000      -0.117      -0.095
+dust                          -0.5231      0.049    -10.608      0.000      -0.620      -0.426
+ammonia                        1.8159      0.078     23.306      0.000       1.663       1.969
+==============================================================================
+Omnibus:                     6746.040   Durbin-Watson:                   0.284
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            20783.562
+Skew:                           1.230   Prob(JB):                         0.00
+Kurtosis:                       6.411   Cond. No.                     3.06e+05
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.06e+05. This might indicate that there are
+strong multicollinearity or other numerical problems.
+F-test feature importance results:
+                   Feature           F             p
+           carbon_monoxide 6651.428451  0.000000e+00
+                      pm10 5538.208718  0.000000e+00
+                     pm2_5 4548.518142  0.000000e+00
+           sulphur_dioxide 2755.495885  0.000000e+00
+                     ozone 2453.812177  0.000000e+00
+            wind_speed_10m 1590.471275  0.000000e+00
+                   ammonia 1466.657931 7.172799e-313
+   wet_bulb_temperature_2m 1314.206066 2.673754e-281
+            temperature_2m 1229.745982 9.761300e-264
+           wind_speed_100m 1107.584973 3.037270e-238
+              dew_point_2m 1059.577214 3.393698e-228
+      apparent_temperature  978.948906 2.783581e-211
+et0_fao_evapotranspiration  605.423385 2.756571e-132
+       shortwave_radiation  501.261869 4.607736e-110
+          surface_pressure  356.466425  5.093017e-79
+   vapour_pressure_deficit  329.838557  2.730083e-73
+      relative_humidity_2m  270.142385  2.019213e-60
+                      dust  233.085642  2.052500e-52
+         sunshine_duration  213.621391  3.344208e-48
+         diffuse_radiation  200.823038  1.978496e-45
+                      rain  113.337010  2.043546e-26
+             precipitation  104.907063  1.413484e-24
+       wind_direction_100m    3.249158  7.147082e-02
+               cloud_cover    1.609527  2.045688e-01
+        wind_direction_10m    0.377183  5.391198e-01
+Mutual information results:
+                   Feature       MI
+           carbon_monoxide 0.144703
+                      pm10 0.128122
+                     pm2_5 0.116951
+                     ozone 0.108183
+           sulphur_dioxide 0.101401
+                   ammonia 0.065260
+       wind_direction_100m 0.062496
+            temperature_2m 0.061414
+        wind_direction_10m 0.059381
+         diffuse_radiation 0.056575
+   wet_bulb_temperature_2m 0.054703
+       shortwave_radiation 0.053394
+   vapour_pressure_deficit 0.051475
+              dew_point_2m 0.050938
+et0_fao_evapotranspiration 0.050893
+            wind_speed_10m 0.050630
+           wind_speed_100m 0.046596
+      apparent_temperature 0.045953
+          surface_pressure 0.041772
+      relative_humidity_2m 0.031428
+         sunshine_duration 0.023822
+               cloud_cover 0.014765
+                      dust 0.013835
+                      rain 0.010581
+             precipitation 0.000000
+Lasso regression coefficients:
+temperature_2m                0.000000
+relative_humidity_2m         -0.118138
+dew_point_2m                  0.982385
+apparent_temperature          1.416953
+precipitation                 0.395280
+rain                          0.000000
+surface_pressure             -0.142007
+cloud_cover                  -0.001556
+et0_fao_evapotranspiration    0.000000
+vapour_pressure_deficit       0.000000
+wind_speed_10m               -0.000000
+wind_speed_100m               0.048316
+wind_direction_10m           -0.001381
+wind_direction_100m           0.015671
+wet_bulb_temperature_2m      -3.049531
+sunshine_duration            -0.000026
+shortwave_radiation          -0.015303
+diffuse_radiation             0.031440
+pm10                          1.340578
+pm2_5                        -1.462133
+carbon_monoxide               0.071508
+sulphur_dioxide               0.572704
+ozone                        -0.088013
+dust                         -0.409464
+ammonia                       1.603666
+Random Forest feature importances:
+carbon_monoxide               0.232209
+wind_direction_100m           0.080058
+sulphur_dioxide               0.067607
+ammonia                       0.061522
+surface_pressure              0.050484
+pm10                          0.048204
+ozone                         0.041438
+wind_direction_10m            0.039680
+wind_speed_100m               0.035115
+relative_humidity_2m          0.035070
+pm2_5                         0.034920
+dew_point_2m                  0.028496
+shortwave_radiation           0.028444
+wind_speed_10m                0.028181
+vapour_pressure_deficit       0.028047
+et0_fao_evapotranspiration    0.025711
+cloud_cover                   0.024117
+diffuse_radiation             0.022499
+wet_bulb_temperature_2m       0.021141
+temperature_2m                0.019715
+apparent_temperature          0.018507
+dust                          0.018028
+sunshine_duration             0.005562
+precipitation                 0.002637
+rain                          0.002609
+
+XIV. Residual Analysis (Model Based):
+Residuals vs. fitted plot saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/residuals_vs_fitted.pdf.
+QQ plot of residuals saved: scripts/data_analysis/no2/eda_report_22_25_2/plots/qq_plot_residuals.pdf.
+Ljung–Box test on residuals results saved: scripts/data_analysis/no2/eda_report_22_25_2/stats/ljung_box_residuals.csv.
+
+XV. Model Comparison:
+OLS Regression Summary:
+                             OLS Regression Results                             
+================================================================================
+Dep. Variable:     NO$_2$ Concentration   R-squared:                       0.043
+Model:                              OLS   Adj. R-squared:                  0.043
+Method:                   Least Squares   F-statistic:                     422.3
+Date:                  Fri, 28 Mar 2025   Prob (F-statistic):          2.13e-268
+Time:                          15:09:53   Log-Likelihood:            -1.1460e+05
+No. Observations:                 28197   AIC:                         2.292e+05
+Df Residuals:                     28193   BIC:                         2.292e+05
+Df Model:                             3                                         
+Covariance Type:              nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+const                   26.0014      2.182     11.915      0.000      21.724      30.279
+temperature_2m          -0.1564      0.093     -1.683      0.092      -0.339       0.026
+relative_humidity_2m     0.0298      0.023      1.276      0.202      -0.016       0.076
+dew_point_2m            -0.2661      0.097     -2.744      0.006      -0.456      -0.076
+==============================================================================
+Omnibus:                     6645.524   Durbin-Watson:                   0.208
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            18907.365
+Skew:                           1.242   Prob(JB):                         0.00
+Kurtosis:                       6.151   Cond. No.                     2.03e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.03e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+ANOVA model comparison results:
+   df_resid           ssr  df_diff       ss_diff           F  Pr(>F)
+0   28193.0  5.596699e+06      0.0           NaN         NaN     NaN
+1   28171.0  4.052734e+06     22.0  1.543965e+06  487.830271     0.0

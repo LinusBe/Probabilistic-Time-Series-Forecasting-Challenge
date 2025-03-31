@@ -1,0 +1,16 @@
+{
+    "hidden_size": 112,
+    "num_layers": 1,
+    "dropout": 0.3817503926843537,
+    "learning_rate": 0.00015087392907028906,
+    "weight_decay": 5.8179396353612576e-05,
+    "batch_size": 117,
+    "epochs": 77,
+    "optimizer": "adam",
+    "bias": false,
+    "gradient_clipping": {
+        "enabled": false,
+        "norm_type": null,
+        "clip_norm": null
+    }
+}

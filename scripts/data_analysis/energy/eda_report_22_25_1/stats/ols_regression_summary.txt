@@ -1,0 +1,29 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          Energy Demand   R-squared:                       0.126
+Model:                            OLS   Adj. R-squared:                  0.126
+Method:                 Least Squares   F-statistic:                     1360.
+Date:                Fri, 28 Mar 2025   Prob (F-statistic):               0.00
+Time:                        14:37:30   Log-Likelihood:            -1.0138e+05
+No. Observations:               28197   AIC:                         2.028e+05
+Df Residuals:                   28193   BIC:                         2.028e+05
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+const                   86.7854      2.414     35.954      0.000      82.054      91.516
+temperature_2m          -0.8720      0.109     -7.990      0.000      -1.086      -0.658
+relative_humidity_2m    -0.3411      0.026    -13.374      0.000      -0.391      -0.291
+dew_point_2m             0.3596      0.113      3.183      0.001       0.138       0.581
+==============================================================================
+Omnibus:                     4119.619   Durbin-Watson:                   0.069
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1026.505
+Skew:                           0.107   Prob(JB):                    1.25e-223
+Kurtosis:                       2.090   Cond. No.                     3.66e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.66e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.

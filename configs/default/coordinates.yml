@@ -1,0 +1,335 @@
+
+
+weather:
+  history:
+    karlsruhe:
+      url:
+    germany:
+      url: "https://archive-api.open-meteo.com/v1/archive"
+  forecast:
+    karlsruhe:
+      url:
+    germany:
+      url: "https://api.open-meteo.com/v1/forecast"
+  params:
+    hourly: ["temperature_2m", "relative_humidity_2m", "dew_point_2m", "apparent_temperature",
+            "precipitation", "rain", "snowfall", "snow_depth", "pressure_msl", "surface_pressure",
+            "cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high",
+            "et0_fao_evapotranspiration", "vapour_pressure_deficit", "wind_speed_10m", "wind_speed_100m",
+            "wind_direction_10m", "wind_direction_100m", "wind_gusts_10m", "soil_temperature_0_to_7cm",
+            "soil_moisture_0_to_7cm", "wet_bulb_temperature_2m", "sunshine_duration", "shortwave_radiation",
+            "direct_radiation", "diffuse_radiation", "direct_normal_irradiance", "global_tilted_irradiance",
+            "terrestrial_radiation", "shortwave_radiation_instant", "direct_radiation_instant", 
+            "diffuse_radiation_instant", "direct_normal_irradiance_instant",
+            "global_tilted_irradiance_instant", "terrestrial_radiation_instant"]
+    timezone: "Europe/Berlin"
+    cell_selection: "nearest"
+    models: ["best_match", "ecmwf_ifs", "era5_seamless", "era5"]
+
+
+
+
+coords:
+  karlsruhe:
+    Karlsruhe:
+      number of station: 10501
+      latitude: 49.03333333333333
+      longitude: 8.35
+    Rheinstetten:
+      number of station: 10291
+      latitude: 48.96666666666667
+      longitude: 8.333333333333334
+    Eggenstein-Leopoldshafen:
+      number of station: 10091
+      latitude: 49.5
+      longitude: 8.55
+
+  germany:
+    Aachen:
+      number of station: 10501
+      latitude: 50.78333333333333
+      longitude: 6.083333333333333
+    Prenzlau:
+      number of station: 10291
+      latitude: 53.016666666666666
+      longitude: 13.983333333333333
+    Greifswald:
+      number of station: 10091
+      latitude: 54.666666666666664
+      longitude: 13.433333333333334
+    Gessertshausen:
+      number of station: 10852
+      latitude: 48.416666666666664
+      longitude: 10.933333333333334
+    Ebern:
+      number of station: 10675
+      latitude: 49.86666666666667
+      longitude: 10.9
+    Berlin:
+      number of station: 10384
+      latitude: 52.46666666666667
+      longitude: 13.4
+    Bremen:
+      number of station: 10224
+      latitude: 53.03333333333333
+      longitude: 8.783333333333333
+    Halberstadt:
+      number of station: 10453
+      latitude: 51.8
+      longitude: 10.616666666666667
+    Döbern:
+      number of station: 10496
+      latitude: 51.78333333333333
+      longitude: 14.316666666666666
+    Bremerhaven:
+      number of station: 10131
+      latitude: 53.86666666666667
+      longitude: 8.7
+    Dresden:
+      number of station: 10488
+      latitude: 51.11666666666667
+      longitude: 13.75
+    Düsseldorf:
+      number of station: 10400
+      latitude: 51.28333333333333
+      longitude: 6.766666666666667
+    Emden:
+      number of station: 10200
+      latitude: 53.38333333333333
+      longitude: 7.233333333333333
+    Erfurt:
+      number of station: 10554
+      latitude: 50.983333333333334
+      longitude: 10.95
+    Zwickau:
+      number of station: 10578
+      latitude: 50.416666666666664
+      longitude: 12.95
+    Frankfurt am Main:
+      number of station: 10637
+      latitude: 50.03333333333333
+      longitude: 8.583333333333334
+    Freudenstadt:
+      number of station: 10815
+      latitude: 48.45
+      longitude: 8.4
+    Kassel:
+      number of station: 10439
+      latitude: 51.11666666666667
+      longitude: 9.283333333333333
+    Passau:
+      number of station: 10895
+      latitude: 48.53333333333333
+      longitude: 13.35
+    Chemnitz:
+      number of station: 10567
+      latitude: 50.86666666666667
+      longitude: 12.116666666666667
+    Gießen:
+      number of station: 10532
+      latitude: 50.6
+      longitude: 8.65
+    Görlitz:
+      number of station: 10499
+      latitude: 51.15
+      longitude: 14.95
+    Greifswald_2:  # Added "_2" to distinguish from the other Greifswald
+      number of station: 10184
+      latitude: 54.083333333333336
+      longitude: 13.4
+    Dippoldiswalde:
+      number of station: 10791
+      latitude: 49.1
+      longitude: 13.133333333333333
+    Bernkastel-Kues:
+      number of station: 10616
+      latitude: 49.93333333333333
+      longitude: 7.25
+    Buxtehude:
+      number of station: 10147
+      latitude: 53.38
+      longitude: 9.983333333333333
+    Hannover:
+      number of station: 10338
+      latitude: 52.45
+      longitude: 9.666666666666666
+    Plauen:
+      number of station: 10685
+      latitude: 50.3
+      longitude: 11.866666666666667
+    Fürstenfeldbruck:
+      number of station: 10962
+      latitude: 47.8
+      longitude: 11.0
+    Kirchhundem:
+      number of station: 10427
+      latitude: 51.1833333333
+      longitude: 8.483333333333333
+    Karlsruhe:
+      number of station: 10727
+      latitude: 49.03333333333333
+      longitude: 8.35
+    Bad Hersfeld:
+      number of station: 10438
+      latitude: 51.28333333333333
+      longitude: 9.433333333333334
+    Kempten (Allgäu):
+      number of station: 10946
+      latitude: 47.7166666667
+      longitude: 10.33333333334
+    Bad Segeberg:
+      number of station: 10046
+      latitude: 54.3666666667
+      longitude: 10.133333333333333
+    Köln:
+      number of station: 10513
+      latitude: 50.85
+      longitude: 7.15
+    Ravensburg:
+      number of station: 10929
+      latitude: 47.66666666664
+      longitude: 9.183333333333334
+    Emmendingen:
+      number of station: 10805
+      latitude: 48.35
+      longitude: 7.816666666666666
+    Leipzig:
+      number of station: 10469
+      latitude: 51.43333333333333
+      longitude: 12.233333333333333
+    Wilhelmshaven:
+      number of station: 10124
+      latitude: 53.85
+      longitude: 8.116666666666667
+    Beeskow:
+      number of station: 10393
+      latitude: 52.2
+      longitude: 14.116666666666667
+    Hamm:
+      number of station: 10430
+      latitude: 51.78333333333333
+      longitude: 8.833333333333334
+    Magdeburg:
+      number of station: 10361
+      latitude: 52.1
+      longitude: 11.583333333333334
+    Eggenstein-Leopoldshafen:
+      number of station: 10729
+      latitude: 49.5
+      longitude: 8.55
+    Lübz:
+      number of station: 10264
+      latitude: 53.3166666667
+      longitude: 11.933333333333334
+    Arnstadt:
+      number of station: 10548
+      latitude: 50.55
+      longitude: 10.366666666666667
+    Bad Wörishofen:
+      number of station: 10870
+      latitude: 48.3666666667
+      longitude: 11.816666666666666
+    Münster:
+      number of station: 10315
+      latitude: 52.13333333333333
+      longitude: 7.7
+    Pritzwalk:
+      number of station: 10270
+      latitude: 52.9
+      longitude: 12.8
+    Perleberg:
+      number of station: 10271
+      latitude: 52.94
+      longitude: 13.416666666666666
+    Nordenham:
+      number of station: 10113
+      latitude: 53.7
+      longitude: 7.15
+    Bonn:
+      number of station: 10506
+      latitude: 50.3666666667
+      longitude: 6.866666666666667
+    Pegnitz:
+      number of station: 10763
+      latitude: 49.5
+      longitude: 11.05
+    Hanau:
+      number of station: 10641
+      latitude: 50.083333333333336
+      longitude: 8.783333333333333
+    Schwäbisch Hall:
+      number of station: 10742
+      latitude: 49.2
+      longitude: 9.516666666666667
+    Brandenburg an der Havel:
+      number of station: 10379
+      latitude: 52.38333333333333
+      longitude: 13.05
+    Roßwein:
+      number of station: 10776
+      latitude: 49.03333333333333
+      longitude: 12.1
+    Rheinstetten:
+      number of station: 10731
+      latitude: 48.9666666667
+      longitude: 8.333333333333334
+    Grimmen:
+      number of station: 10170
+      latitude: 54.016666666666666
+      longitude: 12.066666666666666
+    Trier:
+      number of station: 10708
+      latitude: 49.2
+      longitude: 7.1
+    Itzehoe:
+      number of station: 10035
+      latitude: 54.516666666666666
+      longitude: 9.533333333333333
+    Büsum:
+      number of station: 10162
+      latitude: 53.63333333333333
+      longitude: 8.85
+    Sternberg:
+      number of station: 10162
+      latitude: 53.63333333333333
+      longitude: 11.383333333333333
+    Reutlingen:
+      number of station: 10836
+      latitude: 48.66666666664
+      longitude: 9.85
+    Waldheim:
+      number of station: 10788
+      latitude: 48.8166666667
+      longitude: 12.55
+    Balingen:
+      number of station: 10738
+      latitude: 48.6833333333
+      longitude: 9.216666666666667
+    Trierweiler:
+      number of station: 10609
+      latitude: 49.733333333333334
+      longitude: 6.65
+    Wyk auf Föhr:
+      number of station: 10007
+      latitude: 54.166666666666664
+      longitude: 7.45
+    Flensburg:
+      number of station: 10004
+      latitude: 54.166666666666664
+      longitude: 6.35
+    Kellinghusen:
+      number of station: 10544
+      latitude: 50.483333333333334
+      longitude: 9.933333333333334
+    Mühlberg/Elbe:
+      number of station: 10688
+      latitude: 49.666666666666664
+      longitude: 12.183333333333334
+    Murnau am Staffelsee:
+      number of station: 10980
+      latitude: 47.7
+      longitude: 12.0
+    Bad Griesbach im Rottal:
+      number of station: 10655
+      latitude: 49.766666666666666
+      longitude: 9.95

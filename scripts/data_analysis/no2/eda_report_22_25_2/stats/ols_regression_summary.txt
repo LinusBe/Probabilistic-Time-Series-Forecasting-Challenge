@@ -1,0 +1,29 @@
+                             OLS Regression Results                             
+================================================================================
+Dep. Variable:     NO$_2$ Concentration   R-squared:                       0.043
+Model:                              OLS   Adj. R-squared:                  0.043
+Method:                   Least Squares   F-statistic:                     422.3
+Date:                  Fri, 28 Mar 2025   Prob (F-statistic):          2.13e-268
+Time:                          15:09:53   Log-Likelihood:            -1.1460e+05
+No. Observations:                 28197   AIC:                         2.292e+05
+Df Residuals:                     28193   BIC:                         2.292e+05
+Df Model:                             3                                         
+Covariance Type:              nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+const                   26.0014      2.182     11.915      0.000      21.724      30.279
+temperature_2m          -0.1564      0.093     -1.683      0.092      -0.339       0.026
+relative_humidity_2m     0.0298      0.023      1.276      0.202      -0.016       0.076
+dew_point_2m            -0.2661      0.097     -2.744      0.006      -0.456      -0.076
+==============================================================================
+Omnibus:                     6645.524   Durbin-Watson:                   0.208
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            18907.365
+Skew:                           1.242   Prob(JB):                         0.00
+Kurtosis:                       6.151   Cond. No.                     2.03e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.03e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.

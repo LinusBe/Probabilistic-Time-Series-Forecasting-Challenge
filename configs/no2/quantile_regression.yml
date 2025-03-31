@@ -1,0 +1,1079 @@
+dataset: no2           # Name des Datensatzes, z. B. "energy", "no2" oder "solar".
+model: quantile_regression          # Modelltyp; hier wird LightGBM genutzt, kann aber auch "quantile_regression" usw. sein.
+quantiles: [0.025, 0.25, 0.5, 0.75, 0.975]  # Liste der zu prognostizierenden Quantile.
+optuna_search_space:
+  param_space:
+    alpha: [0.0, 1.0]
+
+
+versions:
+  v1.0.0:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus; oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.5
+      solver: highs
+      solver_options:
+        presolve: false
+    forecast_horizon: 72
+
+
+  v1.0.1:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus; oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 10
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.5
+      solver: highs
+      solver_options:
+        presolve: false
+    forecast_horizon: 72
+
+
+
+  v1.0.2:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus; oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: false
+          proximity: false
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.005099417274662999
+      solver: highs
+      solver_options:
+        presolve: false
+    forecast_horizon: 72
+
+
+  v1.1.0:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus; oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+    forecast_horizon: 72
+
+  v1.1.1:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          # - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          # - direct_radiation
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+  v1.1.2:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: false
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          # - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+  v1.1.3:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+  v1.1.4:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.051913670130557685
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+
+
+
+
+  v1.1.5:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: rolling_cv          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: true         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.24677883546956225
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+
+
+  v1.1.6:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                     # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: [24, 168]
+      time_features:
+        - hour
+        - weekday
+        - is_weekend
+        - month
+        - summer_winter_time
+      fourier_terms: true
+      exogenous:
+        base_features:
+          - temperature_2m
+          - rain
+          - surface_pressure
+          - cloud_cover
+          - wind_speed_10m
+          - wind_speed_100m
+          - sunshine_duration
+          - direct_radiation
+          - dew_point_2m
+          - apparent_temperature
+          - sulphur_dioxide
+
+        transformations:
+          rolling:
+            windows: [24, 168]
+            stats: [mean, std]
+            features: [temperature_2m, wind_speed_10m]
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: true
+          proximity: true
+          country: DE
+        interactions:
+          - [temperature_2m, rain]
+          - [sunshine_duration, wind_speed_10m]
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+
+
+
+
+
+  v1.1.7:
+    # Datenaufbereitung und Splitting
+    start_date: '2022-01-01 00:00:00'  # Datum, ab dem die Daten verwendet bzw. gefiltert werden.
+    train_size: 0.9                    # Anteil der Daten, die für das Training genutzt werden.
+    test_size: 0.1                   # Anteil der Daten, die als Testset verwendet werden.
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus;rolling_cv oder simple_split
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize         # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss       # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: True
+          method: robust             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: True
+          method: robust             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: True
+          method: robust
+        exog:
+          enabled: True
+          method: robust
+        advanced:
+          enabled: True
+          method: robust
+      target:
+        lags: [140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159]
+      time_features: 
+        - hour
+        - weekday
+      fourier_terms: False
+      exogenous:
+        base_features:
+          - wind_speed_10m
+          - apparent_temperature
+          - sulphur_dioxide
+          - ozone
+          - pm10
+          - pm2_5
+          - carbon_monoxide
+          - dust
+          - ammonia
+
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: False
+          proximity: False
+          country: DE
+        interactions: []
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params:
+      alpha: 0.0037881862705716014
+      solver: highs
+      solver_options:
+        presolve: false
+

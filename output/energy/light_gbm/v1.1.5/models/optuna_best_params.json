@@ -1,0 +1,27 @@
+{
+    "num_leaves": 95,
+    "max_depth": 30,
+    "learning_rate": 0.050299182600335855,
+    "n_estimators": {
+        "0.025": 354,
+        "0.25": 354,
+        "0.5": 552,
+        "0.75": 354,
+        "0.975": 354
+    },
+    "lambda_l1": 4.9741355206446224e-05,
+    "lambda_l2": 1.0914777181791617e-05,
+    "boosting_type": "gbdt",
+    "feature_fraction": 0.645065006420103,
+    "bagging_fraction": 0.602107201648388,
+    "bagging_freq": 3,
+    "min_child_samples": 124,
+    "min_child_weight": 0.001274179456077813,
+    "subsample": 0.6579397310592762,
+    "subsample_freq": 17,
+    "colsample_bytree": 0.31282284595922555,
+    "max_bin": 102,
+    "min_split_gain": 0.16367163386925138,
+    "min_data_in_leaf": 18,
+    "min_sum_hessian_in_leaf": 3.777708906433001
+}

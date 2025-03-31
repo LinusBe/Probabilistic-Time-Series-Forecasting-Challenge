@@ -1,0 +1,94 @@
+dataset: "energy"
+model: "baseline"
+quantiles: [0.025, 0.25, 0.5, 0.75, 0.975]
+optuna_search_space:
+  param_space:
+    alpha: []
+
+versions:
+  v1.0.0:
+    start_date: "2022-01-01 00:00:00"
+    train_size: 0.9
+    test_size: 0.1
+    eval_set:                      # Gibt an, ob ein Validierungsset im traing der Hauptmodelle verwendet werden soll. 
+      use: False
+      size: 0.1
+    early_stopping:               # only possible with eval !!!!
+      rounds:
+      delta:
+    imputation_method:                # Imputationsmethode für fehlende Werte in exog. Time knn und spline
+      use: time
+      time_cfg:
+        method: time
+        limit_direction: forward
+      knn_cfg:
+        method: knn
+        n_neighbors: 5
+        weights: uniform
+        metric: nan_euclidean
+      spline_cfg:
+        method: spline
+        order: 3
+        limit_direction: forward
+    training_mode: simple_split          # Trainingsmodus; simple_split oder rolling_cv
+    cv_settings:
+      window_type: expanding      # oder "sliding"
+      test_window: 1W             # 1 Woche Vorhersage
+      optuna_folds: 1         # Anzahl der Folds für Optuna innerhalb der CV
+    optuna:
+      use_optuna: false         # Gibt an, ob Hyperparameter-Tuning mit Optuna durchgeführt werden soll.
+      n_trials: 15
+      n_splits: 2
+      direction: minimize   # Ziel: Minimierung des Pinball Loss
+      metric: pinball_loss   # Metrik, die optimiert werden soll
+      quantile: 0.5            # Standard-Quantil für die Optimierung
+    feature_selection:        #if run_selection is set to True, the top_n features will be selected
+      top_n: 10
+      run_selection: false
+    last_t: 25 # deine Wahl, z.B. letzte 5 Wochen/Monate zur Quantilberechnung
+        
+    # Feature-Einstellungen
+    features:
+      normalization:
+        base_features:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        time:
+          enabled: false
+          method: standardize             # 3 options available: standardize, minmax, robust
+        lag:
+          enabled: false
+          method: standardize
+        exog:
+          enabled: false
+          method: standardize
+        advanced:
+          enabled: false
+          method: standardize
+      target:
+        lags: []
+      time_features: []
+      fourier_terms: false
+      exogenous:
+        base_features: []
+        transformations:
+          rolling:
+            windows: []
+            stats: []
+            features: []
+          diff:
+            windows: []
+            features: []
+      advanced:
+        holiday:
+          enabled: False
+          proximity: False
+          country: DE
+        interactions:
+        rolling_moments:
+          windows: []
+          moments: []
+          features: []
+    params: {}
+    forecast_horizon: 72
+

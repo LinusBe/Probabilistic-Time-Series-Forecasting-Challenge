@@ -1,0 +1,70 @@
+Optuna Optimization Log - 2025-03-24_14-59-33
+Config: {'dataset': 'energy', 'model': 'quantile_regression', 'quantiles': [0.025, 0.25, 0.5, 0.75, 0.975], 'optuna_search_space': {'param_space': {'alpha': [0.0, 1.0]}}, 'versions': {'v1.0.0': {'start_date': '2022-01-01 00:00:00', 'train_size': 0.9, 'test_size': 0.1, 'imputation_method': {'use': 'time', 'time_cfg': {'method': 'time', 'limit_direction': 'forward'}, 'knn_cfg': {'method': 'knn', 'n_neighbors': 5, 'weights': 'uniform', 'metric': 'nan_euclidean'}, 'spline_cfg': {'method': 'spline', 'order': 3, 'limit_direction': 'forward'}}, 'training_mode': 'simple_split', 'cv_settings': {'window_type': 'expanding', 'test_window': '1W', 'optuna_folds': 2}, 'optuna': {'use_optuna': False, 'n_trials': 15, 'n_splits': 2, 'direction': 'minimize', 'metric': 'pinball_loss', 'quantile': 0.5}, 'feature_selection': {'top_n': 10, 'run_selection': False}, 'features': {'normalization': {'base_features': {'enabled': False, 'method': 'standardize'}, 'time': {'enabled': False, 'method': 'standardize'}, 'lag': {'enabled': False, 'method': 'standardize'}, 'exog': {'enabled': False, 'method': 'standardize'}, 'advanced': {'enabled': False, 'method': 'standardize'}}, 'target': {'lags': [24, 168]}, 'time_features': ['hour', 'weekday', 'is_weekend', 'month'], 'fourier_terms': False, 'exogenous': {'base_features': [], 'transformations': {'rolling': {'windows': [], 'stats': [], 'features': []}, 'diff': {'windows': [], 'features': []}}}, 'advanced': {'holiday': {'enabled': False, 'proximity': False, 'country': 'DE'}, 'interactions': [], 'rolling_moments': {'windows': [], 'moments': [], 'features': []}}}, 'params': {'alpha': 0.5, 'solver': 'highs', 'solver_options': {'presolve': False}}, 'forecast_horizon': 72}, 'v1.0.1': {'start_date': '2022-01-01 00:00:00', 'train_size': 0.9, 'test_size': 0.1, 'imputation_method': {'use': 'time', 'time_cfg': {'method': 'time', 'limit_direction': 'forward'}, 'knn_cfg': {'method': 'knn', 'n_neighbors': 5, 'weights': 'uniform', 'metric': 'nan_euclidean'}, 'spline_cfg': {'method': 'spline', 'order': 3, 'limit_direction': 'forward'}}, 'training_mode': 'rolling_cv', 'cv_settings': {'window_type': 'expanding', 'test_window': '1W', 'optuna_folds': 2}, 'optuna': {'use_optuna': False, 'n_trials': 10, 'n_splits': 2, 'direction': 'minimize', 'metric': 'pinball_loss', 'quantile': 0.5}, 'feature_selection': {'top_n': 10, 'run_selection': False}, 'features': {'normalization': {'base_features': {'enabled': False, 'method': 'standardize'}, 'time': {'enabled': False, 'method': 'standardize'}, 'lag': {'enabled': False, 'method': 'standardize'}, 'exog': {'enabled': False, 'method': 'standardize'}, 'advanced': {'enabled': False, 'method': 'standardize'}}, 'target': {'lags': [24, 168]}, 'time_features': ['hour', 'weekday', 'is_weekend', 'month'], 'fourier_terms': False, 'exogenous': {'base_features': [], 'transformations': {'rolling': {'windows': [], 'stats': [], 'features': []}, 'diff': {'windows': [], 'features': []}}}, 'advanced': {'holiday': {'enabled': False, 'proximity': False, 'country': 'DE'}, 'interactions': [], 'rolling_moments': {'windows': [], 'moments': [], 'features': []}}}, 'params': {'alpha': 0.5, 'solver': 'highs', 'solver_options': {'presolve': False}}, 'forecast_horizon': 72}, 'v1.0.2': {'start_date': '2022-01-01 00:00:00', 'train_size': 0.9, 'test_size': 0.1, 'imputation_method': {'use': 'time', 'time_cfg': {'method': 'time', 'limit_direction': 'forward'}, 'knn_cfg': {'method': 'knn', 'n_neighbors': 5, 'weights': 'uniform', 'metric': 'nan_euclidean'}, 'spline_cfg': {'method': 'spline', 'order': 3, 'limit_direction': 'forward'}}, 'training_mode': 'simple_split', 'cv_settings': {'window_type': 'expanding', 'test_window': '1W', 'optuna_folds': 2}, 'optuna': {'use_optuna': True, 'n_trials': 15, 'n_splits': 2, 'direction': 'minimize', 'metric': 'pinball_loss', 'quantile': 0.5}, 'feature_selection': {'top_n': 10, 'run_selection': False}, 'features': {'normalization': {'base_features': {'enabled': False, 'method': 'standardize'}, 'time': {'enabled': False, 'method': 'standardize'}, 'lag': {'enabled': False, 'method': 'standardize'}, 'exog': {'enabled': False, 'method': 'standardize'}, 'advanced': {'enabled': False, 'method': 'standardize'}}, 'target': {'lags': [24, 168]}, 'time_features': ['hour', 'weekday', 'is_weekend', 'month'], 'fourier_terms': False, 'exogenous': {'base_features': [], 'transformations': {'rolling': {'windows': [], 'stats': [], 'features': []}, 'diff': {'windows': [], 'features': []}}}, 'advanced': {'holiday': {'enabled': False, 'proximity': False, 'country': 'DE'}, 'interactions': [], 'rolling_moments': {'windows': [], 'moments': [], 'features': []}}}, 'params': {'alpha': 0.5, 'solver': 'highs', 'solver_options': {'presolve': False}}, 'forecast_horizon': 72}}, 'energy': {'data_file': 'data/raw/energy/energy_data.csv', 'exogenous_files': ['data/weather/history/germany/current.csv', 'data/weather/forecasts/germany/current.csv', 'data/air/history/germany/current.csv', 'data/air/forecasts/germany/current.csv']}, 'no2': {'data_file': 'data/raw/no2/no2_data.csv', 'exogenous_files': ['data/weather/history/karlsruhe/current.csv', 'data/weather/forecasts/karlsruhe/current.csv', 'data/air/history/karlsruhe/current.csv', 'data/air/forecasts/karlsruhe/current.csv']}, 'save_paths': {'base_output': 'output', 'logs_subfolder': 'logs', 'results_subfolder': 'results', 'predictions_subfolder': 'predictions', 'plots_subfolder': 'plots'}, 'start_date': '2022-01-01 00:00:00', 'train_size': 0.9, 'test_size': 0.1, 'imputation_method': {'use': 'time', 'time_cfg': {'method': 'time', 'limit_direction': 'forward'}, 'knn_cfg': {'method': 'knn', 'n_neighbors': 5, 'weights': 'uniform', 'metric': 'nan_euclidean'}, 'spline_cfg': {'method': 'spline', 'order': 3, 'limit_direction': 'forward'}}, 'training_mode': 'simple_split', 'cv_settings': {'window_type': 'expanding', 'test_window': '1W', 'optuna_folds': 2}, 'optuna': {'use_optuna': True, 'n_trials': 15, 'n_splits': 2, 'direction': 'minimize', 'metric': 'pinball_loss', 'quantile': 0.5}, 'feature_selection': {'top_n': 10, 'run_selection': False}, 'features': {'normalization': {'base_features': {'enabled': False, 'method': 'standardize'}, 'time': {'enabled': False, 'method': 'standardize'}, 'lag': {'enabled': False, 'method': 'standardize'}, 'exog': {'enabled': False, 'method': 'standardize'}, 'advanced': {'enabled': False, 'method': 'standardize'}}, 'target': {'lags': [24, 168]}, 'time_features': ['hour', 'weekday', 'is_weekend', 'month'], 'fourier_terms': False, 'exogenous': {'base_features': [], 'transformations': {'rolling': {'windows': [], 'stats': [], 'features': []}, 'diff': {'windows': [], 'features': []}}}, 'advanced': {'holiday': {'enabled': False, 'proximity': False, 'country': 'DE'}, 'interactions': [], 'rolling_moments': {'windows': [], 'moments': [], 'features': []}}}, 'params': {'alpha': 0.5, 'solver': 'highs', 'solver_options': {'presolve': False}}, 'forecast_horizon': 72, 'version': 'v1.0.2', 'output_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2', 'logs_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/logs', 'results_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/results', 'predictions_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/predictions', 'plots_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/plots', 'models_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/models', 'hyperparameter_dir': '/uni/ptsfc/output/energy/quantile_regression/v1.0.2/hyperparameter'}
+
+Trial 0:
+  Params: {'alpha': 0.4680696875381982}
+  Loss: 1.3695931228678084
+Trial 1:
+  Params: {'alpha': 0.24714396185220844}
+  Loss: 1.3648953202435805
+Trial 2:
+  Params: {'alpha': 0.3234078154768457}
+  Loss: 1.366189510521489
+Trial 3:
+  Params: {'alpha': 0.9810917931275026}
+  Loss: 1.3909035530243794
+Trial 4:
+  Params: {'alpha': 0.8050266658823461}
+  Loss: 1.3819022316547067
+Trial 5:
+  Params: {'alpha': 0.15861706476743886}
+  Loss: 1.350141721344597
+Trial 6:
+  Params: {'alpha': 0.12465964765836923}
+  Loss: 1.3453351919122198
+Trial 7:
+  Params: {'alpha': 0.01608262594007792}
+  Loss: 1.328887981524212
+Trial 8:
+  Params: {'alpha': 0.739943437536078}
+  Loss: 1.379487702951674
+Trial 9:
+  Params: {'alpha': 0.9560875089121982}
+  Loss: 1.3895290646727312
+Trial 10:
+  Params: {'alpha': 0.025326880797263196}
+  Loss: 1.3305240766685844
+Trial 11:
+  Params: {'alpha': 0.0050753041850121194}
+  Loss: 1.319144550009378
+Trial 12:
+  Params: {'alpha': 0.0037881862705716014}
+  Loss: 1.317716340639453
+Trial 13:
+  Params: {'alpha': 0.4852620945894938}
+  Loss: 1.3703106942465428
+Trial 14:
+  Params: {'alpha': 0.4057577963739895}
+  Loss: 1.3678006228785549
+
+--- Best Results ---
+Best Trial: 12
+Best Params: {'alpha': 0.0037881862705716014}
+Best Loss: 1.317716340639453
+
+--- All Trials ---
+Trial 0: Loss=1.3695931228678084, Params={'alpha': 0.4680696875381982}, State=TrialState.COMPLETE
+Trial 1: Loss=1.3648953202435805, Params={'alpha': 0.24714396185220844}, State=TrialState.COMPLETE
+Trial 2: Loss=1.366189510521489, Params={'alpha': 0.3234078154768457}, State=TrialState.COMPLETE
+Trial 3: Loss=1.3909035530243794, Params={'alpha': 0.9810917931275026}, State=TrialState.COMPLETE
+Trial 4: Loss=1.3819022316547067, Params={'alpha': 0.8050266658823461}, State=TrialState.COMPLETE
+Trial 5: Loss=1.350141721344597, Params={'alpha': 0.15861706476743886}, State=TrialState.COMPLETE
+Trial 6: Loss=1.3453351919122198, Params={'alpha': 0.12465964765836923}, State=TrialState.COMPLETE
+Trial 7: Loss=1.328887981524212, Params={'alpha': 0.01608262594007792}, State=TrialState.COMPLETE
+Trial 8: Loss=1.379487702951674, Params={'alpha': 0.739943437536078}, State=TrialState.COMPLETE
+Trial 9: Loss=1.3895290646727312, Params={'alpha': 0.9560875089121982}, State=TrialState.COMPLETE
+Trial 10: Loss=1.3305240766685844, Params={'alpha': 0.025326880797263196}, State=TrialState.COMPLETE
+Trial 11: Loss=1.319144550009378, Params={'alpha': 0.0050753041850121194}, State=TrialState.COMPLETE
+Trial 12: Loss=1.317716340639453, Params={'alpha': 0.0037881862705716014}, State=TrialState.COMPLETE
+Trial 13: Loss=1.3703106942465428, Params={'alpha': 0.4852620945894938}, State=TrialState.COMPLETE
+Trial 14: Loss=1.3678006228785549, Params={'alpha': 0.4057577963739895}, State=TrialState.COMPLETE
