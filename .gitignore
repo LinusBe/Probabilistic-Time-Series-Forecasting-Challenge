@@ -4,8 +4,7 @@
 *.sqlite
 *.cache
 
-*.jpg
-*.jpeg
+
 
 *.docx
 *.doc
